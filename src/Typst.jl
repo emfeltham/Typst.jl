@@ -16,6 +16,7 @@ using GLM, StatsAPI, StatsBase, Statistics
 include("utilities.jl")
 include("types.jl")
 include("figure.jl")
+include("modelinfo.jl")
 include("regtable.jl")
 
 end # module Typst

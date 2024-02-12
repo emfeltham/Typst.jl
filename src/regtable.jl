@@ -1,21 +1,6 @@
 # regtable.jl
 
 """
-        ModelInfo
-
-## Description
-
-Model information pulled from linear model object, for use with table 
-construction.
-"""
-struct ModelInfo
-    estimation::String
-    coef::Dict{String, Dict{String, String}}
-    stats::Dict{String, String}
-    varcomp::Dict{String, String}
-end
-
-"""
         regtable_typ(ms, filename; caption = nothing, roundvals = 3)
 
 ## Description
@@ -73,7 +58,7 @@ function regtable_typ(
     cells_o = if isnothing(caption)
         vcat(fnc, cells_o, tb * ") \n ) \n")
     else
-        caption_o = tb * "), \n" * tb * "caption: " * "[" * caption * "]\n)\n"
+        caption_o = tb * "), \n" * tb * "caption: " * "[" * caption * "]\n)"
         vcat(fnc, cells_o, caption_o)
     end
 
@@ -84,11 +69,20 @@ function regtable_typ(
     # typst variables
     tvars = [
         # "#let topinset = 0.1em",
-        "#let col1width = 12em",
-        "#let coliwidth = auto"
+        "#let col1width = 12em" * "\n",
+        "#let coliwidth = auto" * "\n \n"
     ];
 
-    cells_o = vcat(imp * "\n", tvars .* "\n", "\n", cells_o)
+    cells_o = vcat(imp * "\n", tvars .* "", cells_o)
+
+    # table label
+    lbraw = split(filename, ".")
+    lab = if length(lbraw) > 1
+        " " * "<" * lbraw[end-1] * ">" * "\n"
+    else
+        " " * "<" * lbraw[1] * ">" * "\n"
+    end
+    cells_o[end] = cells_o[end] * lab
 
     txto = reduce(*, cells_o);
     textexport(filename, txto; ext = ".typ");
@@ -249,37 +243,5 @@ function pthres(
         ky[fl]
     else
         ""
-    end
-end
-
-function _modelinfos!(mfos, ms, stats, digits, rndp)
-    for m in ms
-        ct = coeftable(m)
-        pv = ct.cols[ct.pvalcol]
-        cdict = Dict{String, Dict{String, String}}();
-        for (cn, c, se, ci, pval) in zip(
-            coefnames(m),
-            coef(m),
-            stderror(m),
-            eachrow(confint(m)),
-            pv
-        )
-            cdict[cn] = Dict{String, String}()
-            cdict[cn]["est"] = (string∘round)(c; digits)
-            cdict[cn]["se"] = (string∘round)(se; digits)
-            cdict[cn]["ci"] = string(round.(ci; digits))
-            cdict[cn]["pval"] = string(round.(pval; digits = rndp))
-        end
-
-        sdict = Dict{String, String}();
-        
-        for stat in stats
-            # need to have a way to leave blank if not defined on `m`
-            sdict[string(stat)] = (string∘round)(stat(m); digits)
-        end
-        # construct row by row
-
-        mfo = ModelInfo("OLS", cdict, sdict, Dict{String, String}())
-        push!(mfos, mfo)
     end
 end
