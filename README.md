@@ -9,7 +9,7 @@ This package will be useful for to julia users engaged in academic and professio
 
 [^rdme-1]: Which I find to be slow, and difficult to work with. Perhaps more importantly, they have been found [difficult to replicate](https://arxiv.org/abs/2209.04308).
 
-[^rdme-2]: These solutions, e.g., Quarto typically require conversion of Markdown to TeX to render to PDF which may complicate detailed formatting, is is consequently subject to slow compilation.
+[^rdme-2]: These solutions, e.g., Quarto requires conversion of Markdown to TeX to render to PDF which may complicate detailed formatting, and is consequently subject to slow compilation. While Quarto now supports Typst, users may find that that indirectly producing Typst documents may cause similar complications and may defeat the purpose of Typst's clean user-end syntax and customizability.
 
 The underlying philosophy here is to provide a simple set of functions that produce properly formatted Typst documents, with captions, label, and other features that may be easily embedded into larger Typst documents. These documents should be easily updated; e.g., as models are re-estimated, figures an tables are changed, or estimates reported in the text change. However, they should also not conflate program execution and writing together (for example, Quarto or RMarkdown documents may become unwieldy when execution times extend beyond those of simple toy examples.)
 
