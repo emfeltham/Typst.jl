@@ -1,7 +1,11 @@
 # Typst.jl
 Functions for interfacing julia with the new typesetting language Typst.
 
+## Tables
+
 Tables are built using the [typst-tablex](https://github.com/PgBiel/typst-tablex) package, which allows for the construction of more sophisticated tables than [included in base Typst](https://typst.app/docs/reference/model/table/).
+
+Table construction for Typst is built around structs that correspond to tablex functions, subset under the `TableX` abstract type, including `CellX`, and `HLineX`, which constitute the building blocks of tables.
 
 ## Regression table
 
@@ -99,10 +103,49 @@ The output contains code that imports the typst-tablex package, and defines two 
 )
 ```
 
+This file should be incorporated into your document via ```typst #include("exampletable.typ")```.
+
+## Figure
+
+The package also provides a function to easily write a ".typ" file that will load a corresponding figure, formatted with a caption and label.
+
+```julia
+using DataFrames
+using CairoMakie
+
+data = DataFrame(X=[1,2,3], Y=[2,4,7], Z = [4,5,6]);
+
+fg, ax, pl = scatter(data.X, data.Y)
+```
+
+The function will automatically handle directories on the path. N.B., the figure file extension is included in `filename`. Note also that output ".typ" file to load the figure expects the figure file to appear in the same directory (e.g., below, the "plot.png" should be saved in "dir/").
+
+```julia
+filename = "dir/plot.png"
+caption = "Plot caption."
+
+figure_typ(
+    filename; caption, label = nothing, width_pct = 100
+)
+```
+
+The following output is produced in "dir/plot.typ":
+
+```typst
+#figure(
+   image("plot.png", width: 100%),
+   caption: [Plot caption.],
+) <plot>
+```
+
+This file should be incorporated into your document via ```typst #include("dir/plot.typ")```.
+
 ## Tasks
 
 - [ ] labels for tables
+- [ ] add objects for other tablex functions, e.g., `#vlinex`
 - [ ] functions for other kinds of tables (e.g., simple display of an array)
 - [ ] documentation for figure export
 - [ ] functions to export variables from julia into Typst (e.g., so that the text can reference exported variables that update based on julia code execution)
 - [ ] real documentation
+- [ ] adjust import statement above to only include functions needed for current table

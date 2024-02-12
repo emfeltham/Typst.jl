@@ -1,4 +1,4 @@
-# example.jl
+# regression_example.jl
 
 data = DataFrame(X=[1,2,3], Y=[2,4,7], Z = [4,5,6])
 
@@ -12,4 +12,3 @@ regtable_typ(
     ms, "exampletable";
     caption = "Models of Y."
 )
-
