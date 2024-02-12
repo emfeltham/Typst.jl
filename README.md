@@ -21,7 +21,7 @@ Subsequently, the goal here is both to provide a set of ready-made functions com
 
 ## Tables
 
-Tables are built using the [typst-tablex](https://github.com/PgBiel/typst-tablex) package, which allows for the construction of more sophisticated tables than [included in base Typst](https://typst.app/docs/reference/model/table/).
+Tables are built using the [typst-tablex](https://github.com/PgBiel/typst-tablex) package, which allows for the construction of more sophisticated tables than [those made in base Typst](https://typst.app/docs/reference/model/table/).
 
 Table construction for Typst is built around structs that correspond to tablex functions, subset under the `TableX` abstract type, including `CellX`, and `HLineX`, which constitute the building blocks of tables.
 
