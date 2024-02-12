@@ -103,7 +103,7 @@ The output contains code that imports the typst-tablex package, and defines two 
 )
 ```
 
-This file should be incorporated into your document via `typst #include("exampletable.typ")`.
+This file should be incorporated into your document via `#include("exampletable.typ")`.
 
 ## Figure
 
@@ -138,7 +138,7 @@ The following output is produced in "dir/plot.typ":
 ) <plot>
 ```
 
-This file should be incorporated into your document via `typst #include("dir/plot.typ")`.
+This file should be incorporated into your document via `#include("dir/plot.typ")`.
 
 ## Tasks
 
