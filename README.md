@@ -1,5 +1,5 @@
 # Typst.jl
-Functions for interfacing [Julia](https://julialang.org) with the new markup-based typesetting language [Typst](https://typst.app/docs).
+Include [Julia](https://julialang.org) outputs as formatted elements of [Typst](https://typst.app/docs) documents.
 
 ## Introduction
 
