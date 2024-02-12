@@ -38,7 +38,7 @@ regtable_typ(
 
 Produces the following output saved to a specified ".typ file (here, "exampletable.typ"):
 
-The output contains code that imports the typst-tablex package, and defines two variables that control table column widths, which may be easily altered by the user. The table itself[^`gridx` objects are identical to `tablex` objects, but do not include vertical and horizontal lines by default.] is embedded in a `figure` object, and is specified as a `table` type[^Which is useful if you want to, for example, set captions above the all table objects in your document, but not for other sorts of figures.]
+The output contains code that imports the typst-tablex package, and defines two variables that control table column widths, which may be easily altered by the user. The table itself^[`gridx` objects are identical to `tablex` objects, but do not include vertical and horizontal lines by default.] is embedded in a `figure` object, and is specified as a `table` type^[Which is useful if you want to, for example, set captions above the all table objects in your document, but not for other sorts of figures.]
 
 ```{typst}
 #import"@preview/tablex:0.0.8": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx
