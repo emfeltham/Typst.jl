@@ -99,7 +99,7 @@ export regtable_typ
 
 function regtable_content!(
     cells, mfos, cnames, modeltitles, stats;
-    pkey = "_Note:_ \$#super[+]p<0.10\$; \$#super[\$star.op\$]p<0.05\$; \$#super[\$star.op star.op\$]p<0.01\$, \$#super[\$star.op star.op star.op\$]p<0.001\$",
+    pkey = "_Note:_ \$#super[+]p<0.10\$; \$#super[\$star.op\$]p<0.05\$; \$#super[\$star.op star.op\$]p<0.01\$; \$#super[\$star.op star.op star.op\$]p<0.001\$",
     statnames = Dict( # nice names for common statistics
         "nobs" => "N",
         "r2" => "\$R^2\$",
