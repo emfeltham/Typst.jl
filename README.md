@@ -1,5 +1,15 @@
 # Typst.jl
-Functions for interfacing julia with the new typesetting language Typst.
+Functions for interfacing [julia](https://julialang.org) with the new markup-based typesetting language [Typst](https://typst.app/docs).
+
+## Introduction
+
+[Typst](https://typst.app/docs) is a new system for markup-based typesetting, touted as an alternative to LaTeX. Typst is desirable as a system that is very fast to compile (near instantaneous live rendering), relatively simple to use with clear and clean syntax, and easily extensible with user-contributed packages. It has also recently been [incorporated into Quarto](https://quarto.org/docs/output-formats/typst.html).
+
+This package will be useful for to julia users engaged in academic and professional writing, and may be a simpler alternative to other common approaches to writing dynamic documents that rely on the outputs of programs (e.g, Jupyter, Markdown-based solutions, LaTeX).
+
+The underlying philosophy here is to provide a simple set of functions that produce properly formatted Typst documents, with captions, label, and other features that may be easily embedded into larger Typst documents. These documents should be easily updated; e.g., as models are re-estimated, figures an tables are changed, or estimates reported in the text change. However, they should also not conflate program execution and writing together (for example, Quarto or RMarkdown documents may become unwieldy when execution times extend beyond those of simple toy examples.)
+
+The goal here is both to provide a set of ready-made functions common to an academic writing workflow (e.g., creating regression tables, including figures) and more general options for customizable output in Typst (e.g., export a custom table using simple defined types).
 
 ## Tables
 
@@ -149,3 +159,4 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 - [ ] functions to export variables from julia into Typst (e.g., so that the text can reference exported variables that update based on julia code execution)
 - [ ] real documentation
 - [ ] adjust import statement above to only include functions needed for current table
+- [ ] structs and functions for `gridx` options
