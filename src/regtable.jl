@@ -11,7 +11,8 @@ formatted ".typ" file.
 """
 function regtable_typ(
     ms, filename;
-    modeltitles = nothing, caption = nothing, roundvals = 3
+    modeltitles = nothing, caption = nothing, roundvals = 3,
+    understat = "se"
 )
 
     # indentation for print formatting
@@ -44,7 +45,7 @@ function regtable_typ(
 
     # generate the body of the table (coefficients, statistics)
     cells = TableX[];
-    regtable_content!(cells, mfos, cnames, modeltitles, stats);
+    regtable_content!(cells, mfos, cnames, modeltitles, stats, understat);
 
     cells_p = [print(cell) for cell in cells];
 
@@ -92,7 +93,7 @@ end
 export regtable_typ
 
 function regtable_content!(
-    cells, mfos, cnames, modeltitles, stats;
+    cells, mfos, cnames, modeltitles, stats, understat = "se";
     pkey = "_Note:_ \$#super[+]p<0.10\$; \$#super[\$star.op\$]p<0.05\$; \$#super[\$star.op star.op\$]p<0.01\$; \$#super[\$star.op star.op star.op\$]p<0.001\$",
     statnames = Dict( # nice names for common statistics
         "nobs" => "N",
@@ -152,7 +153,7 @@ function regtable_content!(
             cinfo = get(mfo.coef, cn, nothing)
             
             if !isnothing(cinfo)
-                for (si, st) in enumerate(["est", "se"])
+                for (si, st) in enumerate(["est", understat])
                     vl = if st == "se"
                         "(" * cinfo["se"] * ")"
                     elseif st == "est"
