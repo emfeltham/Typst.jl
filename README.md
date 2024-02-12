@@ -25,9 +25,9 @@ Tables are built using the [typst-tablex](https://github.com/PgBiel/typst-tablex
 
 Table construction for Typst is built around structs that correspond to tablex functions, subset under the `TableX` abstract type, including `CellX`, and `HLineX`, which constitute the building blocks of tables.
 
-## Regression table
+## Regression table[rdme-4]
 
-Example borrowed from [GLM.jl](https://juliastats.org/GLM.jl/stable/examples/).
+[^rdme-4]: Example borrowed from [GLM.jl](https://juliastats.org/GLM.jl/stable/examples/).
 
 Set up simple data set, and execute OLS.
 
