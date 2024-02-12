@@ -1,11 +1,11 @@
 # Typst.jl
-Functions for interfacing [julia](https://julialang.org) with the new markup-based typesetting language [Typst](https://typst.app/docs).
+Functions for interfacing [Julia](https://julialang.org) with the new markup-based typesetting language [Typst](https://typst.app/docs).
 
 ## Introduction
 
 [Typst](https://typst.app/docs) is a new system for markup-based typesetting, touted as an alternative to LaTeX. Typst is desirable as a system that is very fast to compile (near instantaneous live rendering), relatively simple to use with clear and clean syntax, and easily extensible with user-contributed packages. It has also recently been [incorporated into Quarto](https://quarto.org/docs/output-formats/typst.html). However, do note that this system is new and limited in various ways (for example, Typst currently only renders to PDF).
 
-This package will be useful for to julia users engaged in academic and professional writing, and may be a simpler alternative to other common approaches to writing dynamic documents that rely on the outputs of programs (e.g, Jupyter[^rdme-1], Markdown-based solutions[^rdme-2], LaTeX).
+This package will be useful for to Julia users engaged in academic and professional writing, and may be a simpler alternative to other common approaches to writing dynamic documents that rely on the outputs of programs (e.g, Jupyter[^rdme-1], Markdown-based solutions[^rdme-2], LaTeX).
 
 [^rdme-1]: Which I find to be slow, and difficult to work with. Perhaps more importantly, they have been found [difficult to replicate](https://arxiv.org/abs/2209.04308).
 
@@ -156,11 +156,25 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ## Tasks
 
-- [ ] labels for tables
-- [ ] add objects for other tablex functions, e.g., `#vlinex`
-- [ ] functions for other kinds of tables (e.g., simple display of an array)
-- [ ] documentation for figure export
-- [ ] functions to export variables from julia into Typst (e.g., so that the text can reference exported variables that update based on julia code execution)
 - [ ] real documentation
-- [ ] adjust import statement above to only include functions needed for current table
+
+### Regression tables
+
+- [ ] support for MixedModels
+- [X] labels
+
+### Tables
+
+- [ ] objects for other tablex functions, e.g., `#vlinex`
+- [ ] functions for other kinds of tables (e.g., simple display of an array)
+- [ ] NamedArrays
 - [ ] structs and functions for `gridx` options
+- [ ] adjust import statement above to only include functions needed for current table
+
+### Figures
+
+- [ ] documentation for figure export
+
+### Dynamic text
+
+- [ ] export variables from Julia into Typst (e.g., so that the text can reference exported variables that update based on Julia code execution)
