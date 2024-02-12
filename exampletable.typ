@@ -1,42 +1,3 @@
-# Typst.jl
-Functions for interfacing julia with the new typesetting language Typst.
-
-Tables are built using the [typst-tablex](https://github.com/PgBiel/typst-tablex) package, which allows for the construction of more sophisticated tables than [included in base Typst](https://typst.app/docs/reference/model/table/).
-
-## Regression table
-
-Example borrowed from [GLM.jl](https://juliastats.org/GLM.jl/stable/examples/).
-
-Set up simple data set, and execute OLS.
-
-```{julia}
-using Typst
-using DataFrames
-using GLM
-
-data = DataFrame(X=[1,2,3], Y=[2,4,7], Z = [4,5,6])
-
-ols1 = lm(@formula(Y ~ X), data)
-ols2 = lm(@formula(Y ~ Z), data)
-ols3 = lm(@formula(Y ~ X + Z), data)
-
-ms = [ols1, ols2, ols3];
-```
-
-Construct a formatted regression table for Typst:
-
-```{julia}
-regtable_typ(
-    ms, "exampletable";
-    caption = "Models of Y."
-)
-```
-
-Produces the following output saved to a specified ".typ file (here, "exampletable.typ"):
-
-The output contains code that imports the typst-tablex package, and defines two variables that control table column widths, which may be easily altered by the user. The table itself[^`gridx` objects are identical to `tablex` objects, but do not include vertical and horizontal lines by default.] is embedded in a `figure` object, and is specified as a `table` type^[Which is useful if you want to, for example, set captions above the all table objects in your document, but not for other sorts of figures.]
-
-```{typst}
 #import"@preview/tablex:0.0.8": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx
 #let col1width = 12em
 #let coliwidth = auto
@@ -97,12 +58,3 @@ The output contains code that imports the typst-tablex package, and defines two 
     ), 
     caption: [Models of Y.]
 )
-```
-
-## Tasks
-
-- [ ] labels for tables
-- [ ] functions for other kinds of tables (e.g., simple display of an array)
-- [ ] documentation for figure export
-- [ ] functions to export variables from julia into Typst (e.g., so that the text can reference exported variables that update based on julia code execution)
-- [ ] real documentation

@@ -34,7 +34,6 @@ function regtable_typ(
     
     cnames = (unique∘reduce)(vcat, [coefnames(m) for m in ms]);
     ms_l = length(ms);
-    modtxt = "models";
     
     # force at least two digits for p-values
     rndp = if roundvals < 2
@@ -54,14 +53,15 @@ function regtable_typ(
     # options arguments to gridx
     hvars = [
         cols,
-        "rows: auto",
+        "rows: (0.2em, 1.5em)", # first row for double line; 1.5 thereafter
         "align: center + horizon",
     ];
 
+    # generate the body of the table (coefficients, statistics)
     cells = TableX[];
-    regtable_content!(cells, mfos, cnames, modtxt, modeltitles, stats);
+    regtable_content!(cells, mfos, cnames, modeltitles, stats);
 
-    cells_p = [print(cell) for cell in cells]
+    cells_p = [print(cell) for cell in cells];
 
     # these are all the arguments to gridx
     cells_o = tb * tb .* vcat(hvars, cells_p)
@@ -83,7 +83,7 @@ function regtable_typ(
 
     # typst variables
     tvars = [
-        "#let topinset = 0.1em",
+        # "#let topinset = 0.1em",
         "#let col1width = 12em",
         "#let coliwidth = auto"
     ];
@@ -98,7 +98,7 @@ end
 export regtable_typ
 
 function regtable_content!(
-    cells, mfos, cnames, modtxt, modeltitles, stats;
+    cells, mfos, cnames, modeltitles, stats;
     pkey = "_Note:_ \$#super[+]p<0.10\$; \$#super[\$star.op\$]p<0.05\$; \$#super[\$star.op star.op\$]p<0.01\$, \$#super[\$star.op star.op star.op\$]p<0.001\$",
     statnames = Dict( # nice names for common statistics
         "nobs" => "N",
@@ -116,15 +116,13 @@ function regtable_content!(
     # creates a double-line top bar
     topline = [
         hlinex(stroke = Symbol("0.05em"), y = 0),
-        cellx(inset = :topinset, colspan = colnum, x = 0, y = 0),
+        cellx(colspan = colnum, x = 0, y = 0),
         hlinex(stroke = Symbol("0.05em"), y = 1),
     ];
 
     append!(cells, topline)
 
     # model titles
-    push!(cells, cellx(align = :center, content = modtxt, colspan = colnum - 1, x = 1, y = 1, inset = Symbol("0.8em")))
-
     mtitles = if isnothing(modeltitles)
         string.(1:length(mfos)) # enumerate models by default
     elseif length(mfos) == length(modeltitles)
@@ -136,15 +134,15 @@ function regtable_content!(
     # add cells for model titles
     for (i, e) in enumerate(mtitles)
         et = "(" * e * ")"
-        push!(cells, cellx(content = et, x = i, y = 2))
+        push!(cells, cellx(content = et, x = i, y = 1))
     end
 
     # line should not cover first column (under model titles)
-    push!(cells, hlinex(stroke = Symbol("0.05em"), start_ = 1, y = 4))
+    push!(cells, hlinex(stroke = Symbol("0.05em"), start_ = 1, y = 2))
 
     # coefficients
-    # starting index at y = 4
-    ymn = 5
+    # starting index at y = ymn
+    ymn = 2
     ydex = copy(ymn)
     jmp = 2 # since est and se
 
@@ -153,7 +151,7 @@ function regtable_content!(
 
     for (cn, v) in dd
         # variable name entry
-        push!(cells, cellx(content = cn, x = 0, y = v))
+        push!(cells, cellx(content = cn, align = :left, x = 0, y = v))
         
         # model values entries
         for (mi, mfo) in enumerate(mfos)
@@ -179,34 +177,34 @@ function regtable_content!(
 
     ydex = maximum(values(dd)) + jmp
 
-    push!(
-        cells,
-        cellx(
-            inset = Symbol("0.02em"), align = :center, colspan = colnum,
-            x = 0, y = ydex
-        )
-    )
+    # push!(
+    #     cells,
+    #     cellx(
+    #         inset = Symbol("0.0em"), align = :center, colspan = colnum,
+    #         x = 0, y = ydex
+    #     )
+    # )
 
-    ydex += 1
+    # ydex += 1
 
-    push!(cells, hlinex(stroke = Symbol("0.05em"), start_ = 1, y = ydex + 1))
+    push!(cells, hlinex(stroke = Symbol("0.05em"), start_ = 1, y = ydex))
 
-    push!(
-        cells,
-        cellx(align = :center, colspan = colnum - 1, x = 1, y = ydex)
-    )
+    # push!(
+    #     cells,
+    #     cellx(align = :center, colspan = colnum - 1, x = 1, y = ydex)
+    # )
 
-    ydex += 1
+    # ydex += 1
 
     # model stats
-    ydex += 1
+    # ydex += 1
     sdict = Dict(string.(stats) .=> ydex:(ydex + length(stats) - 1))
 
     for (k, v) in sdict
         kn = get(statnames, k, k)
         push!(
             cells,
-            cellx(content = kn, align = :center, x = 0, y = v)
+            cellx(content = kn, align = :left, x = 0, y = v)
         )
     end
 
@@ -224,16 +222,16 @@ function regtable_content!(
 
     ydex = maximum(values(sdict)) + 1
 
-    push!(cells, cellx(align = :center, colspan = colnum, x = 0, y = ydex))
-    ydex += 1
+    # push!(cells, cellx(align = :center, colspan = colnum, x = 0, y = ydex))
+    # ydex += 1
     
     push!(cells, hlinex(stroke = Symbol("0.1em"), y = ydex))
 
     # notes
-    ydex += 1
+    # ydex += 1
     push!(
         cells,
-        cellx(; content = pkey, colspan = colnum, y = ydex)
+        cellx(; content = pkey, colspan = colnum, align = :left, y = ydex)
     )
 end
 
