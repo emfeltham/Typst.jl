@@ -111,7 +111,7 @@ function regtable_typ(
     end
 
     # import statement
-    imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx";
+    imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n";
 
     col1width = if isnothing(col1width)
         mxname
