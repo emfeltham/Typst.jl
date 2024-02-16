@@ -16,6 +16,7 @@ function regtable_typ(
     ms, filename;
     modeltitles = nothing, caption = nothing, roundvals = 3,
     understat = "se", col1width = 10,
+    stats = [nobs, r2, adjr2, aic, bic],
     pvalkey = (
         values = [0.1, 0.05, 0.005, 0.001],
         symbols = [
@@ -36,7 +37,6 @@ function regtable_typ(
     pvks = pvalkey.symbols .* ", "
     pstatement = "// pkey \n" * "#let ps = " * "(" * reduce(*, pvks) * ")" * "\n \n"
     
-    
     nts = ["ps.at(" * string(i-1) * ")" * "\$p<" * string(v) * "\$" for (i, v) in enumerate(pvalkey.values)];
     nts = "#" .* nts;
     nts[1:(end-1)] = nts[1:(end-1)] .* "; ";
@@ -53,7 +53,6 @@ function regtable_typ(
     end;
 
     # extract model information
-    stats = [nobs, r2, adjr2, aic, bic];
     statnames = Dict( # nice names for common statistics
         "nobs" => "N",
         "r2" => "\$R^2\$",
@@ -104,7 +103,7 @@ function regtable_typ(
     fnc = ["#figure( \n", tb * "kind: table, \n", tb * "gridx( \n", ];
 
     cells_o = if isnothing(caption)
-        vcat(fnc, cells_o, tb * ") \n ) \n")
+        vcat(fnc, cells_o, tb * ") \n)")
     else
         caption_o = tb * "), \n" * tb * "caption: " * "[" * caption * "]\n)"
         vcat(fnc, cells_o, caption_o)
@@ -137,7 +136,8 @@ function regtable_typ(
     )
 
     # table label
-    lbraw = split(filename, ".")
+    lbraw = split(filename, "/")[end]
+    lbraw = split(lbraw, ".")
     lab = if length(lbraw) > 1
         " " * "<" * lbraw[end-1] * ">" * "\n"
     else
@@ -225,28 +225,45 @@ function regtable_content!(
 
     ydex = maximum(values(dd)) + jmp
 
-    # push!(
-    #     cells,
-    #     cellx(
-    #         inset = Symbol("0.0em"), align = :center, colspan = colnum,
-    #         x = 0, y = ydex
-    #     )
-    # )
-
-    # ydex += 1
-
     push!(cells, hlinex(stroke = Symbol("0.05em"), start_ = 1, y = ydex))
 
-    # push!(
-    #     cells,
-    #     cellx(align = :center, colspan = colnum - 1, x = 1, y = ydex)
-    # )
+    # random effects
+    # sort based on N size, nesting? (rather than name...)
+    if any(length(mfo.varcomp) > 0 for mfo in mfos)
+        rnames = union(
+            reduce(vcat, [(collect∘keys)(mfo.varcomp) for mfo in mfos])
+        );
 
-    # ydex += 1
+        # ordered since it is difficult to extract names,
+        # and we want N_grp to appear in the varcomp order
+        rdict = OrderedDict(
+            string.(rnames) .=> ydex:(ydex + length(rnames) - 1)
+        );
+
+        for (k, v) in rdict
+            push!(
+                cells,
+                cellx(content = k, align = :name_align, x = 0, y = v)
+            )
+        end
+
+        for (mi, mfo) in enumerate(mfos)
+            for (k, v) in mfo.varcomp
+                sval = get(rdict, k, nothing)
+
+                if !isnothing(sval)
+                    push!(cells, cellx(content = v, x = mi, y = sval))
+                end
+            end
+        end
+
+        ydex = maximum(values(rdict)) + 1
+
+        push!(cells, hlinex(stroke = Symbol("0.05em"), start_ = 1, y = ydex))
+    end
 
     # model stats
-    # ydex += 1
-    sdict = Dict(string.(stats) .=> ydex:(ydex + length(stats) - 1))
+    sdict = Dict(string.(stats) .=> ydex:(ydex + length(stats) - 1));
 
     for (k, v) in sdict
         kn = get(statnames, k, k)
@@ -270,13 +287,9 @@ function regtable_content!(
 
     ydex = maximum(values(sdict)) + 1
 
-    # push!(cells, cellx(align = :center, colspan = colnum, x = 0, y = ydex))
-    # ydex += 1
-    
     push!(cells, hlinex(stroke = Symbol("0.1em"), y = ydex))
 
     # notes
-    # ydex += 1
     push!(
         cells,
         cellx(; content = pnote, colspan = colnum, align = :left, y = ydex)

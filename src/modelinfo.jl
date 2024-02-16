@@ -10,39 +10,66 @@ construction.
 """
 struct ModelInfo
     estimation::String
-    coef::Dict{String, Dict{String, String}}
-    stats::Dict{String, String}
-    varcomp::Dict{String, String}
+    coef::AbstractDict{String, Dict{String, String}}
+    stats::AbstractDict{String, String}
+    varcomp::AbstractDict{String, String}
 end
 
+@inline ±(x, y) = [x-y, x+y]
+
+"""
+        _modelinfos!(mfos, ms, stats, digits, rndp)
+
+## Description
+
+Populate a `ModelInfo` object for each input model in `ms` that contains
+model information for the regression table in a format more amenable to
+table construction.
+"""
 function _modelinfos!(mfos, ms, stats, digits, rndp)
     for m in ms
-        ct = coeftable(m)
-        pv = ct.cols[ct.pvalcol]
         cdict = Dict{String, Dict{String, String}}();
-        for (cn, c, se, ci, pval) in zip(
-            coefnames(m),
-            coef(m),
-            stderror(m),
-            eachrow(confint(m)),
-            pv
-        )
+        
+        for c in coeftable(m)
+            cn = c[:Name];
             cdict[cn] = Dict{String, String}()
-            cdict[cn]["est"] = (string∘round)(c; digits)
-            cdict[cn]["se"] = (string∘round)(se; digits)
-            cdict[cn]["ci"] = string(round.(ci; digits))
-            cdict[cn]["pval"] = string(round.(pval; digits = rndp))
+            cdict[cn]["est"] = (string∘round)(c[Symbol("Coef.")]; digits)
+            cdict[cn]["se"] = (string∘round)(c[Symbol("Std. Error")]; digits)
+            cint = c[Symbol("Coef.")] ± c[Symbol("Coef.")] * 1.96 # 5% sig.
+            cdict[cn]["ci"] = string(round.(cint; digits))
+            cdict[cn]["pval"] = string(round.(c[Symbol("Pr(>|z|)")]; digits = rndp))
         end
 
         sdict = Dict{String, String}();
+
+        # Mixed Model info
+        # Random effects variance components
+        vcomp = OrderedDict{String, String}();
+        if typeof(m) <: MixedModel
+            varcorr = VarCorr(m) # σρ field is NamedTuple
+            σρ = getfield(varcorr, :σρ)
+            for (ranvar, ran) in pairs(σρ)
+                # only handle intercepts for now
+                # (ignore ρ, possibility of random intercepts)
+                rval = getfield(ran.σ, Symbol("(Intercept)"));
+                vcomp[string(ranvar) * " var."] = string(round.(rval; digits))
+            end
+            ngr = string.(MixedModels.nlevs.(m.reterms));
+            ngr[1:(end-1)] = ngr[1:(end-1)] .* ", "
+            vcomp["N#sub[groups]"] = reduce(*, ngr)
+        end
         
         for stat in stats
             # need to have a way to leave blank if not defined on `m`
-            sdict[string(stat)] = (string∘round)(stat(m); digits)
+            sdict[string(stat)] = try
+                (string∘round)(stat(m); digits)
+            catch
+                "NA"
+            end
         end
         # construct row by row
 
-        mfo = ModelInfo("OLS", cdict, sdict, Dict{String, String}())
+        mfo = ModelInfo("", cdict::AbstractDict{String, Dict{String, String}}, sdict::AbstractDict{String, String}, vcomp::AbstractDict{String, String})
         push!(mfos, mfo)
     end
 end

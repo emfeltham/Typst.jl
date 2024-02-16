@@ -11,7 +11,9 @@ need a huge dependency.
 using DataFrames
 
 # these likely do need to be imported to make things relatively easy
-using GLM, StatsAPI, StatsBase, Statistics
+using StatsAPI, StatsBase, Statistics
+using StatsModels, GLM, MixedModels
+import OrderedCollections:OrderedDict
 
 include("utilities.jl")
 include("types.jl")

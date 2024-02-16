@@ -170,6 +170,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 - [ ] support for MixedModels
 - [X] labels
+- [ ] better alignment
 
 ### Tables
 
@@ -185,4 +186,8 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ### Dynamic text
 
-- [ ] export variables from Julia into Typst (e.g., so that the text can reference exported variables that update based on Julia code execution)
+- [ ] export variables from Julia into Typst (e.g., so that the text can reference exported variables that update based on Julia code execution) (probably use dicts)
+
+### Types
+
+- [ ] define types to hold contents for major Typst functions, start with those relevant to table and figure production (they should have same print workflow)
