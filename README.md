@@ -5,7 +5,7 @@ Include [Julia](https://julialang.org) outputs as formatted elements of [Typst](
 
 [Typst](https://typst.app/docs) is a new system for markup-based typesetting, touted as an alternative to LaTeX. Typst is desirable as a system that is very fast to compile (near instantaneous live rendering), relatively simple to use with clear and clean syntax, and easily extensible with user-contributed packages. It has also recently been [incorporated into Quarto](https://quarto.org/docs/output-formats/typst.html). However, do note that this system is new and limited in various ways (e.g., Typst currently only renders to PDF).
 
-This package will be useful for to Julia users engaged in academic and professional writing, and may be a more parsimonious alternative to other common approaches to writing documents that rely on the outputs of programs (e.g, Jupyter[^rdme-1], Markdown-based solutions[^rdme-2], LaTeX).
+This package will be useful to Julia users engaged in academic and professional writing, and may be a more parsimonious alternative to other common approaches to writing documents that rely on the outputs of programs (e.g, Jupyter[^rdme-1], Markdown-based solutions[^rdme-2], LaTeX).
 
 [^rdme-1]: Which I find to be slow, and difficult to work with. Perhaps more importantly, they have been found [difficult to replicate](https://arxiv.org/abs/2209.04308).
 
@@ -13,7 +13,7 @@ This package will be useful for to Julia users engaged in academic and professio
 
 The underlying philosophy here is to provide a simple set of functions that produce properly formatted Typst documents with captions, labels, and other features that may be easily embedded into larger Typst documents. These documents should be easily updated as models are re-estimated, figures and tables are changed, or reported values in the text change as the research and writing process take their course.
 
-The above-mentioned solutions make it possible to do this[^rdme-3]. However, I believe that it is useful to provide an option that does not additionally conflate program execution and writing. Quarto or RMarkdown documents may become unwieldy when execution times extend beyond those of simple toy examples. Generally, one does not want to re-estimate large models or execute long-running code to render the document. The outputs of programs will reasonably be updated asynchronously in relation to changes to the text.
+The above-mentioned solutions make it possible to do this[^rdme-3]. However, I believe that it is useful to provide an option that does not additionally conflate program execution and writing. Quarto or RMarkdown documents may become unwieldy when execution times extend beyond those of simple toy examples. Generally, one does not want to re-estimate large models or execute long-running code to render a document. The outputs of programs will reasonably be updated asynchronously in relation to changes to the text.
 
 Subsequently, the goal here is both to provide a set of ready-made functions common to an academic writing workflow (e.g., creating regression tables, including figures) along with more general means to customize outputs to Typst documents (e.g., export a custom table using simple defined types).
 
