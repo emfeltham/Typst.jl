@@ -1,11 +1,11 @@
 # types.jl
 # types for table building
 
-abstract type TableX end
+abstract type TableComponent end
 
-export TableX
+export TableComponent
 
-struct CellX <: TableX
+struct CellX <: TableComponent
     content::Union{String, Symbol, Real}
     x::Union{Symbol, Int}
     y::Union{Symbol, Int}
@@ -98,7 +98,7 @@ end
 
 export print
 
-struct HLineX <: TableX
+struct HLineX <: TableComponent
     start_::Int # _
     end_::Union{Symbol, Int} # _
     y::Union{Symbol, Int}

@@ -14,13 +14,10 @@ strings in Julia.
 """
 function regtable_typ(
     ms, filename;
-    label = nothing,
-    modeltitles = nothing,
-    caption = :none,
-    supplement = :none,
+    modeltitles = nothing, caption = nothing,
+    supplement = nothing,
     roundvals = 3,
-    understat = "se",
-    col1width = 10,
+    understat = "se", col1width = 10,
     stats = [nobs, r2, adjr2, aic, bic],
     pvalkey = (
         values = [0.1, 0.05, 0.005, 0.001],
@@ -36,6 +33,11 @@ function regtable_typ(
 
     # indentation for print formatting
     tb = "    ";
+
+    colwidths = reduce(*, ["coliwidth, " for _ in 1:ms_l]);
+    cols = "(col1width, " * colwidths * ")";
+    rows = "(0.2em, 1.5em)"; # first row for double line; 1.5 thereafter
+    align = "center + horizon";
 
     # table content
 
@@ -83,57 +85,76 @@ function regtable_typ(
     end
 
     # generate the body of the table (coefficients, statistics)
-    cells = TableComponent[];
+    cells = TableX[];
     regtable_content!(
         cells, mfos, cnames, modeltitles,
         stats, understat, pvalkey, pnote, statnames
     );
 
-    # table object
-    colwidths = reduce(*, ["coliwidth, " for _ in 1:ms_l]);
-    columns = "(col1width, " * colwidths * ")";
-    rows = "(0.2em, 1.5em)"; # first row for double line; 1.5 thereafter
-    align = "center + horizon";
-    
-    tbl = tablex(cells; columns, rows, align);
+    figuret(cells; caption)
 
-    if caption != :none
-        caption = Caption(caption)
+    cells_p = [print(cell) for cell in cells];
+
+    # these are all the arguments to gridx
+    cells_o = tb * tb .* vcat(hvars, cells_p)
+    cells_o[1:(end-1)] = cells_o[1:(end-1)] .* ", \n"
+    cells_o[end] = cells_o[end] * " \n"
+
+    fnc = ["#figure( \n", tb * "kind: table, \n", tb * "gridx( \n", ];
+
+    cells_o = if isnothing(caption)
+        vcat(fnc, cells_o, tb * ") \n)")
+    else
+        caption_o = tb * "), \n" * tb * "caption: " * "[" * caption * "]\n)"
+        vcat(fnc, cells_o, caption_o)
     end
 
-    fgt = figuret(tbl; caption, supplement, kind = :table);
+    cells_o = if isnothing(supplement)
+        vcat(fnc, cells_o, tb * ") \n)")
+    else
+        caption_o = tb * "), \n" * tb * "caption: " * "[" * caption * "]\n)"
+        vcat(fnc, cells_o, caption_o)
+    end
 
     # import statement
     imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n";
 
+    col1width = if isnothing(col1width)
+        mxname
+    else
+        col1width
+    end |> string
+
     # typst variables
     tvars = [
-        "// table params",
-        "#let col1width = " * string(col1width) * "em",
-        "#let coliwidth = auto",
-        "#let name_align = left + horizon",
-    ];
+        # "#let topinset = 0.1em",
+        "// table params \n",
+        "#let col1width = " * col1width * "em" * "\n",
+        "#let coliwidth = auto" * "\n",
+        "#let name_align = left + horizon \n",
+        "\n"
+    ];    
 
-    tvars = reduce(*, tvars .* "\n")
-
-    frontmatter = vcat(
+    cells_o = vcat(
         imp * "\n",
-        tvars,
+        tvars .* "",
         pstatement,
+        cells_o
     )
 
-    frontmatter = reduce(*, frontmatter);
-
     # table label
-    if isnothing(label)
-        label = makelabel(filename)
+    lbraw = split(filename, "/")[end]
+    lbraw = split(lbraw, ".")
+    lab = if length(lbraw) > 1
+        " " * "<" * lbraw[end-1] * ">" * "\n"
+    else
+        " " * "<" * lbraw[1] * ">" * "\n"
     end
+    cells_o[end] = cells_o[end] * lab
 
-    pfgt = print(fgt; label = label, tb = reduce(*, fill(" ", 8)));
-    
-    txto = reduce(*, [frontmatter, pfgt]);
+    txto = reduce(*, cells_o);
     textexport(filename, txto; ext = ".typ");
-    return txto
+    return cells_o
 end
 
 export regtable_typ

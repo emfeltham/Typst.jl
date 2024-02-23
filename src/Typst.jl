@@ -16,9 +16,17 @@ using StatsModels, GLM, MixedModels
 import OrderedCollections:OrderedDict
 
 include("utilities.jl")
-include("types.jl")
+include("cellx.jl")
+include("image.jl")
+include("tablex.jl")
 include("figure.jl")
 include("modelinfo.jl")
 include("regtable.jl")
+
+# function tablex(cells)
+#     return vcat("tablex( \n", cells, ")\n")
+# end
+
+export print
 
 end # module Typst

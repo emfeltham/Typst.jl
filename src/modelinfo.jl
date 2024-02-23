@@ -37,7 +37,8 @@ function _modelinfos!(mfos, ms, stats, digits, rndp)
             cdict[cn]["se"] = (string∘round)(c[Symbol("Std. Error")]; digits)
             cint = c[Symbol("Coef.")] ± c[Symbol("Coef.")] * 1.96 # 5% sig.
             cdict[cn]["ci"] = string(round.(cint; digits))
-            cdict[cn]["pval"] = string(round.(c[Symbol("Pr(>|z|)")]; digits = rndp))
+            pname = ifelse(Symbol("Pr(>|z|)") ∈ (collect∘keys)(c), Symbol("Pr(>|z|)"), Symbol("Pr(>|t|)"))
+            cdict[cn]["pval"] = string(round.(c[pname]; digits = rndp))
         end
 
         sdict = Dict{String, String}();
