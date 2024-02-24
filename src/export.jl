@@ -29,7 +29,7 @@ function figure_export(
     fg,
     save::Function;
     placement = :auto,
-    caption::Union{Symbol, Caption} = :none,
+    caption::Union{Symbol, String} = :none,
     kind = :auto,
     supplement = :none,
     numbering = "1",
@@ -53,7 +53,10 @@ function figure_export(
         outlined
     )
 
-    textexport(filepathname, print(fgt))
+    fnp = split(filepathname, ".")[1] # remove extension
+    fnp * "\"" * fnp * "\""
+
+    textexport(fnp, print(fgt))
     save(filepathname, fg; savekwargs...)
 end
 

@@ -52,45 +52,45 @@ end
 function print(img::Image; tb = "    ")
 
     format = if img.format != :auto
-        "format: " * string(img.format) * "\n"
+        "format: " * string(img.format)
     else
         ""
     end
 
     width = if img.width != :auto
-        "width: " * string(img.width) * "%" * "\n"
+        "width: " * string(img.width) * "%"
     else
         ""
     end
 
     height = if img.height != :auto
-        "height: " * string(img.height) * "%" * "\n"
+        "height: " * string(img.height) * "%"
     else
         ""
     end
 
     alt = if img.alt != :none
-        "alt: " * img.alt * "\n"
+        "alt: " * img.alt
     else
         ""
     end
 
     fit = if img.fit != :cover
-        "fit: " * string(img.fit) * "\n"
+        "fit: " * string(img.fit)
     else
         ""
     end
 
-    fn = getname(img.fn; ext = true) * "\n"
+    fn = "\"" * getname(img.fn; ext = true) * "\""
+
+    elems = [fn, format, width, height, alt, fit];
+
+    elems = elems[elems .!= ""]
+    
 
     return "image(" * "\n" *
-    tb * fn *
-    tb * format *
-    tb * width *
-    tb * height *
-    tb * alt *
-    tb * fit * 
-    ")"
+    reduce(*, tb .* elems .* ",\n") *
+    tb[1:(length(tb)-4)] * ")"
 end
 
 export image
