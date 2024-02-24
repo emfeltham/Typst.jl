@@ -1,7 +1,5 @@
 # typst.jl
 
-import Base.print
-
 struct Caption
     text::String
 end
@@ -49,3 +47,72 @@ function figuret(
 end
 
 export figuret
+
+import Base.print
+
+function print(fx::FigureT; label = nothing, tb = "    ")
+
+    placement = if fx.placement != :auto
+        "placement: " * string(fx.placement)
+    else ""
+    end
+
+    caption = if fx.caption != :none
+        "caption: " * print(fx.caption)
+    else ""
+    end
+
+    kind = if fx.kind != :auto
+        "kind: " * string(fx.kind)
+    else ""
+    end
+
+    supplement = if fx.supplement != :none
+        "supplement: " * fx.supplement
+    else ""
+    end
+
+    numbering = if fx.numbering != "1"
+        "numbering: " * fx.numbering
+    else ""
+    end
+
+    gap = if fx.gap != Symbol("0.65em")
+        "gap: " * string(fx.gap)
+    else ""
+    end
+
+    outlined = if !fx.outlined
+        "outlined: " * string(fx.outlined)
+    else ""
+    end
+
+    ptbl = print(
+        fx.content; tb = reduce(*, fill(" ", 8))
+    );
+
+    elems = [
+        ptbl,
+        placement,
+        caption,
+        kind,
+        supplement,
+        numbering,
+        gap,
+        outlined
+    ]
+
+    elems = elems[elems .!= ""]
+
+    lb = if !isnothing(label)
+        label
+    else
+        ""
+    end
+
+    out = "#figure(" * "\n" *
+    reduce(*, "    " .* elems .* ",\n") *
+    ")" * lb
+
+    return out
+end
