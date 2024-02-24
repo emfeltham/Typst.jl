@@ -1,5 +1,5 @@
 # types.jl
-# types for table building
+# types and functions for table building and printing
 
 abstract type TableComponent end
 

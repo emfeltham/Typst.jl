@@ -165,23 +165,27 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 ## Tasks
 
 - [ ] real documentation
+- [ ] update examples to match code changes
 
 ### Regression tables
 
-- [ ] support for MixedModels
+- [X] basic support for MixedModels
 - [X] labels
-- [ ] better alignment
+- [X] better alignment
+- [ ] improve table row spacing
 
 ### Tables
 
-- [ ] objects for other tablex functions, e.g., `#vlinex`
-- [ ] functions for other kinds of tables (e.g., simple display of an array)
+- [X] objects for other tablex functions, e.g., `#vlinex`
+- [ ] functions for other kinds of tables (e.g., simple display of an array, dataframe)
 - [ ] NamedArrays
 - [ ] structs and functions for `gridx` options
 - [ ] adjust import statement above to only include functions needed for current table
+- [ ] option to include tables with tablecomponents not explicitly indexed by (x, y)
 
 ### Figures
 
+- [X] figure export function
 - [ ] documentation for figure export
 
 ### Dynamic text
@@ -190,4 +194,4 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ### Types
 
-- [ ] define types to hold contents for major Typst functions, start with those relevant to table and figure production (they should have same print workflow)
+- [ ] define types to hold contents relevant Typst functions, start with those relevant to table and figure production (they should have same print workflow)

@@ -1,7 +1,26 @@
 # regtable.jl
 
 """
-        regtable_typ(ms, filename; caption = nothing, roundvals = 3)
+
+        regtablet(
+            ms, filename;
+            label = nothing,
+            modeltitles = nothing,
+            caption = :none,
+            supplement = :none,
+            roundvals = 3,
+            understat = "se",
+            col1width = 10,
+            stats = [nobs, r2, adjr2, aic, bic],
+            pvalkey = (
+                values = [0.1, 0.05, 0.005, 0.001],
+                symbols = [
+                    "super[\$+\$]", "super[\$star.op\$]",
+                    "super[\$star.op star.op\$]",
+                    "super[\$star.op star.op star.op\$]"
+                ]
+            )
+        )
 
 ## Description
 
@@ -12,7 +31,7 @@ formatted ".typ" file.
 P-value key symbols must include escape characters as appropriate for printing
 strings in Julia.
 """
-function regtable_typ(
+function regtablet(
     ms, filename;
     label = nothing,
     modeltitles = nothing,
@@ -26,16 +45,14 @@ function regtable_typ(
         values = [0.1, 0.05, 0.005, 0.001],
         symbols = [
             "super[\$+\$]", "super[\$star.op\$]",
-            "super[\$star.op star.op\$]", "super[\$star.op star.op star.op\$]"
+            "super[\$star.op star.op\$]",
+            "super[\$star.op star.op star.op\$]"
         ]
     )
 )
 
     cnames = (unique∘reduce)(vcat, [coefnames(m) for m in ms]);
     ms_l = length(ms);
-
-    # indentation for print formatting
-    tb = "    ";
 
     # table content
 
@@ -283,7 +300,7 @@ function regtable_content!(
 end
 
 """
-passign()
+        passign(pv, pvalkey)
 
 ## Description
 
