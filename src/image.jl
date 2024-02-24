@@ -30,15 +30,15 @@ function image(
         end
     end
 
-    if img.width != :auto
-        if (img.width < 0) | (img.width > 100)
-            error("width outside range")
+    if width != :auto
+        if (width < 0) | (width > 100)
+            warnign("width outside usual range")
         end
     end
 
-    if img.height != :auto
-        if (img.height < 0) | (img.height > 100)
-            error("width outside range")
+    if height != :auto
+        if (height < 0) | (height > 100)
+            warning("width outside usual range")
         end
     end
 
@@ -81,7 +81,10 @@ function print(img::Image; tb = "    ")
         ""
     end
 
+    fn = getname(img.fn; ext = true) * "\n"
+
     return "image(" * "\n" *
+    tb * fn *
     tb * format *
     tb * width *
     tb * height *
@@ -89,3 +92,5 @@ function print(img::Image; tb = "    ")
     tb * fit * 
     ")"
 end
+
+export image

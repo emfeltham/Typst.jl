@@ -50,14 +50,33 @@ end
 
 export figuret
 
-function makelabel(filename)
+"""
+        getname(filename; ext = false)
+
+## Description
+
+Extract filename from a path to a filename with the file extension. Optionally include the file extension in the output string.
+"""
+function getname(filename; ext = false)
     lbraw = split(filename, "/")[end]
     lbraw = split(lbraw, ".")
     return if length(lbraw) > 1
-        " " * "<" * lbraw[end-1] * ">" * "\n"
+        if ext
+            lbraw[end-1] * "." * lbraw[end]
+        else
+            lbraw[end-1]
+        end
     else
-        " " * "<" * lbraw[1] * ">" * "\n"
+        if ext
+            lbraw[1] * "." * lbraw[end]
+        else
+            lbraw[1]
+        end
     end
+end
+
+function makelabel(filename)
+    return " " * "<" * getname(filename) * ">" * "\n"
 end
 
 function print(fx::FigureT; label = nothing, tb = "    ")
