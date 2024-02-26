@@ -40,7 +40,7 @@ function figuret(
         content,
         placement,
         caption,
-        shortcaption,
+        short_caption,
         kind,
         supplement,
         numbering,

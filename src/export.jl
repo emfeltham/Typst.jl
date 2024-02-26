@@ -46,9 +46,11 @@ function figure_export(
         caption = Caption(caption)
     end
 
-    if short_caption != :none
+    if (short_caption != :none) & (short_caption != :auto)
         short_caption = Caption(short_caption)
+    end
 
+    if short_caption != :none
         shortcapfunction = "// short captions" * "\n" *
         "#let in-outline = state(\"in-outline\", false)" * "\n" *
         "#show outline: it => {" * "\n" *
