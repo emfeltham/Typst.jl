@@ -16,6 +16,8 @@ include("modelinfo.jl")
 include("regtable.jl")
 include("export.jl")
 
+include("markdown.jl")
+
 export print
 
 end # module Typst
