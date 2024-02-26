@@ -1,23 +1,7 @@
 # typst.jl
 
-struct Caption
-    text::String
-end
-
 function print(caption::Caption)
     return "[" * caption.text * "]"
-end
-
-struct FigureT
-    content::Union{TableX, Image}
-    placement::Symbol
-    caption::Union{Symbol, Caption}
-    short_caption::Union{Symbol, Caption}
-    kind::Symbol
-    supplement::Union{String, Symbol}
-    numbering::Union{String, Symbol}
-    gap::Symbol
-    outlined::Bool
 end
 
 function figuret(

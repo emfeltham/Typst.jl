@@ -1,14 +1,5 @@
 # figure.jl
 
-struct Image
-    fn::String
-    format::Union{String, Symbol}
-    width::Union{Int, Symbol}
-    height::Union{Int, Symbol}
-    alt::Symbol
-    fit::Symbol
-end
-
 """
 Specify the format via `filename` by default.
 """
