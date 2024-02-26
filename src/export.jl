@@ -21,7 +21,7 @@
   extension.
 - `fg`: the figure object
 - `save`: the function to save the figure object to a file
-- `savekwargs`: keyword arguments to save
+- `savekwargs`: keyword arguments to `save`
 
 """
 function figure_export(
@@ -56,7 +56,10 @@ function figure_export(
     fnp = split(filepathname, ".")[1] # remove extension
     fnp * "\"" * fnp * "\""
 
-    textexport(fnp, print(fgt))
+    # label is filename
+    label = getname(filepathname; ext = false) |> makelabel
+
+    textexport(fnp, print(fgt; label))
     save(filepathname, fg; savekwargs...)
 end
 
