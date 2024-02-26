@@ -8,6 +8,7 @@
             save::Function;
             placement = :auto,
             caption::Union{Symbol, Caption} = :none,
+            short_caption::Union{Symbol, Caption} = :auto,
             kind = :auto,
             supplement = :none,
             numbering = "1",
@@ -22,6 +23,8 @@
 - `fg`: the figure object
 - `save`: the function to save the figure object to a file
 - `savekwargs`: keyword arguments to `save`
+- `short_caption`: optionally specify a short caption. `:auto` default option 
+  sets the short caption as the first sentence of the caption. There will be no short caption when set to `:none`. N.B. that this option requires the definition of a Typst function in the text export.
 
 """
 function figure_export(
@@ -30,6 +33,7 @@ function figure_export(
     save::Function;
     placement = :auto,
     caption::Union{Symbol, String} = :none,
+    short_caption::Union{Symbol, String} = :auto,
     kind = :auto,
     supplement = :none,
     numbering = "1",
@@ -42,10 +46,26 @@ function figure_export(
         caption = Caption(caption)
     end
 
+    if short_caption != :none
+        short_caption = Caption(short_caption)
+
+        shortcapfunction = "// short captions" * "\n" *
+        "#let in-outline = state(\"in-outline\", false)" * "\n" *
+        "#show outline: it => {" * "\n" *
+        "    in-outline.update(true)" * "\n" *
+        "    it" * "\n" *
+        "    in-outline.update(false)" * "\n" *
+        "}" * "\n" *
+        "#let flex-caption(long, short) = locate(loc => " * "\n" *
+        "    if in-outline.at(loc) { short } else { long }" * "\n" *
+        ")" * "\n\n"
+    end
+
     fgt = figuret(
         image(filepathname);
         placement,
         caption,
+        short_caption,
         kind,
         supplement,
         numbering,
@@ -59,7 +79,13 @@ function figure_export(
     # label is filename
     label = getname(filepathname; ext = false) |> makelabel
 
-    textexport(fnp, print(fgt; label))
+    out = print(fgt; label);
+
+    if short_cap != :none
+        out = shortcapfunction * out
+    end
+
+    textexport(fnp, out)
     save(filepathname, fg; savekwargs...)
 end
 

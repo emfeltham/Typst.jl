@@ -12,6 +12,7 @@ struct FigureT
     content::Union{TableX, Image}
     placement::Symbol
     caption::Union{Symbol, Caption}
+    short_caption::Union{Symbol, Caption}
     kind::Symbol
     supplement::Union{String, Symbol}
     numbering::Union{String, Symbol}
@@ -23,6 +24,7 @@ function figuret(
     content;
     placement = :auto,
     caption::Union{Symbol, Caption} = :none,
+    short_caption::Union{Symbol, Caption} = :none,
     kind = :auto,
     supplement = :none,
     numbering = "1",
@@ -38,6 +40,7 @@ function figuret(
         content,
         placement,
         caption,
+        shortcaption,
         kind,
         supplement,
         numbering,
@@ -57,8 +60,27 @@ function print(fx::FigureT; label = nothing, tb = "    ")
     else ""
     end
 
-    caption = if fx.caption != :none
+    #= caption
+    short caption support via function provided
+    in https://github.com/typst/typst/issues/1295
+    =#
+
+    caption = if (fx.caption == :none) & (fx.short_caption != :none)
+        error("short caption may only be specified when there is a caption.")
+    elseif (fx.caption != :none) & (fx.short_caption == :none)
         "caption: " * print(fx.caption)
+    elseif (fx.caption != :none) & (fx.short_caption != :none)
+
+        short_caption = if fx.sort_caption == :auto
+            Caption(split(fx.caption, ".")[1])
+        else
+            fx.short_caption
+        end
+
+        "caption: flex-caption(\n" *
+        print(fx.caption) * ",\n" *
+        print(short_caption) * "\n" *
+        ")"
     else ""
     end
 
