@@ -166,6 +166,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 - [ ] real documentation
 - [ ] update examples to match code changes
+- [X] short captions
 
 ### Regression tables
 
@@ -194,4 +195,4 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ### Types
 
-- [ ] define types to hold contents relevant Typst functions, start with those relevant to table and figure production (they should have same print workflow)
+- [X] define types to hold contents relevant Typst functions, start with those relevant to table and figure production (they should have same print workflow)

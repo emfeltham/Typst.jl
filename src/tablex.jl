@@ -2,12 +2,32 @@
 
 """
 tablex(
-
+    items;
+    columns = :auto,
+    rows = :auto,
+    inset = Symbol("5pt"),
+    align = :auto,
+    fill = :none,
+    stroke = :auto,
+    column_gutter = :auto,
+    row_gutter = :auto,
+    gutter = :none,
+    repeat_header = false,
+    header_rows = 1,
+    header_hlines_have_priority = true,
+    auto_lines = true,
+    auto_hlines = :auto,
+    auto_vlines = :auto,
+    map_cells = :none,
+    map_hlines = :none,
+    map_vlines = :none,
+    map_rows = :none,
+    map_cols = :none
 )
 
 ## Description
 
-Create a `tablex` object.
+Create a `tablex` object, essentially, a collection of `TableComponent` objects.
 """
 function tablex(
     items;
@@ -58,6 +78,14 @@ function tablex(
     )
 end
 
+
+"""
+        print(tx::TableX; tb = "    ")
+
+## Description
+
+Print a `TableX` object to a string. `tb` adjusts the indentation.
+"""
 function print(tx::TableX; tb = "    ")
     
     columns = if tx.columns != :auto

@@ -4,6 +4,27 @@ function print(caption::Caption)
     return "[" * caption.text * "]"
 end
 
+"""
+        figuret(
+            content;
+            placement = :auto,
+            caption::Union{Symbol, Caption} = :none,
+            short_caption::Union{Symbol, Caption} = :none,
+            kind = :auto,
+            supplement = :none,
+            numbering = "1",
+            gap = Symbol("0.65em"),
+            outlined = true
+        )
+
+## Description
+
+Create a `FigureT` object, containing a `TableX` or `Image` object.
+
+- `short_cap`: Optionally include a short caption that will appear in the list of figures (tables).
+- `kind`: :auto, :table, :figure, or a custom definition. If a custom kind is
+  specified, the supplement must be explicitly stated.
+"""
 function figuret(
     content;
     placement = :auto,
@@ -35,9 +56,7 @@ end
 
 export figuret
 
-import Base.print
-
-function print(fx::FigureT; label = nothing, tb = "    ")
+function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
 
     placement = if fx.placement != :auto
         "placement: " * string(fx.placement)
@@ -69,8 +88,16 @@ function print(fx::FigureT; label = nothing, tb = "    ")
     end
 
     kind = if fx.kind != :auto
-        "kind: " * string(fx.kind)
+        if (fx.kind != :figure) | (fx.kind != :table)
+            # custom types should have surrounding quotes
+            "kind: " * "\"" * string(fx.kind) * "\""
+        else "kind: " * string(fx.kind)
+        end
     else ""
+    end
+    
+    if (fx.kind ∉ [:auto, :table, :figure]) & (fx.supplement == :none)
+        error("custom kind requires supplement")    
     end
 
     supplement = if fx.supplement != :none
@@ -93,9 +120,7 @@ function print(fx::FigureT; label = nothing, tb = "    ")
     else ""
     end
 
-    ptbl = print(
-        fx.content; tb = reduce(*, fill(" ", 8))
-    );
+    ptbl = print(fx.content; tb);
 
     elems = [
         ptbl,
