@@ -21,7 +21,7 @@ end
 
 Create a `FigureT` object, containing a `TableX` or `Image` object.
 
-- `short_cap`: Optionally include a short caption that will appear in the list of figures (tables).
+- `short_caption`: Optionally include a short caption that will appear in the list of figures (tables).
 - `kind`: :auto, :table, :figure, or a custom definition. If a custom kind is
   specified, the supplement must be explicitly stated.
 """
@@ -75,7 +75,7 @@ function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
     elseif (fx.caption != :none) & (fx.short_caption != :none)
 
         short_caption = if fx.short_caption == :auto
-            Caption(split(fx.caption, ".")[1])
+            Caption(split(fx.caption.text, ".")[1])
         else
             fx.short_caption
         end
@@ -101,7 +101,7 @@ function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
     end
 
     supplement = if fx.supplement != :none
-        "supplement: " * fx.supplement
+        "supplement: " * "[" * fx.supplement * "]"
     else ""
     end
 

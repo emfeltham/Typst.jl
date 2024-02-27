@@ -83,7 +83,7 @@ function figure_export(
 
     out = print(fgt; label);
 
-    if short_cap != :none
+    if short_caption != :none
         out = shortcapfunction * out
     end
 
