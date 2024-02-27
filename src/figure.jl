@@ -74,7 +74,7 @@ function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
         "caption: " * print(fx.caption)
     elseif (fx.caption != :none) & (fx.short_caption != :none)
 
-        short_caption = if fx.sort_caption == :auto
+        short_caption = if fx.short_caption == :auto
             Caption(split(fx.caption, ".")[1])
         else
             fx.short_caption
