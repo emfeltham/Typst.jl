@@ -91,7 +91,7 @@ function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
         if (fx.kind != :figure) | (fx.kind != :table)
             # custom types should have surrounding quotes
             "kind: " * "\"" * string(fx.kind) * "\""
-        else "kind: " * string(fx.kind)
+        else "kind: " * "\"" * string(fx.kind) * "\""
         end
     else ""
     end
