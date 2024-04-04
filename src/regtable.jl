@@ -37,6 +37,7 @@ function regtablet(
     modeltitles = nothing,
     caption = :none,
     supplement = :none,
+    kind = :table,
     roundvals = 3,
     understat = "se",
     col1width = 10,
@@ -112,13 +113,13 @@ function regtablet(
     rows = "(0.2em, 1.5em)"; # first row for double line; 1.5 thereafter
     align = "center + horizon";
     
-    tbl = tablex(cells; columns, rows, align);
+    tbl = tablex(cells; columns, rows, align, auto_lines = false);
 
     if caption != :none
         caption = Caption(caption)
     end
 
-    fgt = figuret(tbl; caption, supplement, kind = :table);
+    fgt = figuret(tbl; caption, supplement, kind);
 
     # import statement
     imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n";
@@ -147,13 +148,12 @@ function regtablet(
     end
 
     pfgt = print(fgt; label = label, tb = reduce(*, fill(" ", 8)));
-    
     txto = reduce(*, [frontmatter, pfgt]);
     textexport(filename, txto; ext = ".typ");
     return txto
 end
 
-export regtable_typ
+export regtablet
 
 function regtable_content!(
     cells, mfos, cnames, modeltitles,
