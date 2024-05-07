@@ -9,10 +9,10 @@ import OrderedCollections:OrderedDict
 
 import Base.print
 
+include("types.jl")
 include("cellx.jl")
 include("hlinex.jl")
 include("vlinex.jl")
-include("types.jl")
 include("figure.jl")
 include("utilities.jl")
 include("image.jl")

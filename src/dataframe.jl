@@ -37,14 +37,20 @@ function tablex(
     numberrows = true,
     replaceunderscore = true,
     auto_lines = false,
-    autocell = true
+    autocell = true,
+    superheader = nothing
 )
 
     cells = TableComponent[];
 
+    # superheader
+    if !isnothing(superheader)
+        append!(cells, superheader)
+    end
+
     # column of row numbers
     coloff = if numberrows
-        push!(cells, vlinex(; start_ = 1, stroke, x = 1))
+        push!(cells, vlinex(; start_ = 1, stroke, x = ifelse(autocell, 1, :auto)))
         0
     else
         1
@@ -64,7 +70,7 @@ function tablex(
             ; content = e, cellpos(autocell; x = j - coloff, y = 0)...
         ))
     end
-    push!(cells, hlinex(; start_ = (coloff - 1)*-1, stroke, y = 1),)
+    push!(cells, hlinex(; start_ = (coloff - 1)*-1, stroke, y = ifelse(autocell, 1, auto)),)
 
     # table content
     # row-by-row (to match cell entry order for tablex when autocell=false)
