@@ -50,7 +50,7 @@ function tablex(
         end
         push!(cells, cellx(content = e, x = j-coloff, y = 0))
     end
-    push!(cells, hlinex(; stroke, y = 1),)
+    push!(cells, hlinex(; start_ = (coloff - 1)*-1, stroke, y = 1),)
 
     # iterate over elements of row
     for (i, r) in (enumerate∘eachrow)(df)
