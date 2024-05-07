@@ -110,3 +110,9 @@ function print(fx::FigureT; label = nothing, tb = "    ")
 
     return out
 end
+
+import StatsBase.round
+
+function round(x::Tuple{Float64, Float64}; digits = digits)
+    return tuple([round(a; digits) for a in x]...)
+end
