@@ -21,7 +21,7 @@
 - `filepathname`: the path to the file, including the filename and the figure
   extension.
 - `fg`: the figure object
-- `save`: the function to save the figure object to a file
+- `save`: the function to save the figure object to a file (this works with `save` from `Makie.jl`)
 - `savekwargs`: keyword arguments to `save`
 - `short_caption`: optionally specify a short caption. `:auto` default option 
   sets the short caption as the first sentence of the caption. There will be no short caption when set to `:none`. N.B. that this option requires the definition of a Typst function in the text export.
