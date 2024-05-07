@@ -95,14 +95,11 @@ export figure_export
 
 
 """
-NOT FINISHED
-
         table_export(
             filepathname,
             tbl;
-
             placement = :auto,
-            caption::Union{Symbol, Caption} = :none,
+            caption::Union{Symbol, String} = :none,
             kind = :auto,
             supplement = :none,
             numbering = "1",
@@ -121,7 +118,7 @@ function table_export(
     filepathname,
     tbl;
     placement = :auto,
-    caption::Union{Symbol, Caption} = :none,
+    caption::Union{Symbol, String} = :none,
     kind = :auto,
     supplement = :none,
     numbering = "1",
@@ -135,7 +132,7 @@ function table_export(
     end
 
     fgt = figuret(
-        image(filepathname);
+        tbl;
         placement,
         caption,
         kind,
@@ -145,8 +142,9 @@ function table_export(
         outlined
     )
 
-    textexport(filepathname, print(fgt))
-    save(filepathname, fg; savekwargs...)
+    imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n \n";
+
+    textexport(filepathname, imp * print(fgt))
 end
 
-# export table_export
+export table_export

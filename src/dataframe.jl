@@ -3,7 +3,6 @@
 
 function tablex(
     et::AbstractDataFrame;
-    filename = nothing,
     stroke = Symbol("0.05em"),
     numberrows = true,
     replaceunderscore = true,
@@ -49,11 +48,7 @@ function tablex(
     ncol = size(et, 2) + (coloff - 1)*-1
     columns = "(" * reduce(*, ["auto, " for _ in 1:ncol]) * ")"
 
-    tbx = tablex(cells; columns, auto_lines);
-    
-    imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n \n";
-    textexport(filename, imp * print(tbx); ext = ".typ");
-    return tbx
+    return tablex(cells; columns, auto_lines);
 end
 
 export tablex
