@@ -18,7 +18,10 @@ include("utilities.jl")
 include("image.jl")
 include("tablex.jl")
 include("modelinfo.jl")
+
 include("regtable.jl")
+include("dataframe.jl")
+
 include("export.jl")
 
 include("markdown.jl")

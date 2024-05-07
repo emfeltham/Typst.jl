@@ -150,8 +150,8 @@ function print(tx::TableX; tb = "    ")
 
     # gridx or tablex
     fnc = if tx.auto_lines
-        "tablex"
-    else "gridx"
+        "#tablex"
+    else "#gridx"
     end
 
     auto_hlines = if tx.auto_hlines != :auto
