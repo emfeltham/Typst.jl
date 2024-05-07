@@ -1,8 +1,29 @@
 # dataframe.jl
 # make simple table from DataFrame
 
+"""
+        tablex(
+            df::AbstractDataFrame;
+            stroke = Symbol("0.05em"),
+            numberrows = true,
+            replaceunderscore = true,
+            auto_lines = false
+        )
+
+
+## Description
+
+Creates a `TableX` object from a DataFrame with simple formatting.
+
+- `df`: DataFrame.
+- `stroke = Symbol("0.05em")`: stroke width for vertical lines.
+- `numberrows`: include the row numbers.
+- `replaceunderscore`: replaces column heading name instances of "_" with a space.
+- `auto_lines = false`: Whether to use `gridx` or `tablex` object. The latter automatically draws row and column lines.
+
+"""
 function tablex(
-    et::AbstractDataFrame;
+    df::AbstractDataFrame;
     stroke = Symbol("0.05em"),
     numberrows = true,
     replaceunderscore = true,
@@ -13,7 +34,7 @@ function tablex(
 
     # column of row numbers
     coloff = if numberrows
-        for j in 1:nrow(et)
+        for j in 1:nrow(df)
             push!(cells, cellx(content = string(j), x = 0, y = j))
         end
         push!(cells, vlinex(; start_ = 1, stroke, x = 1))
@@ -23,7 +44,7 @@ function tablex(
     end
 
     # header
-    for (j, e) in names(et) |> enumerate
+    for (j, e) in names(df) |> enumerate
         if replaceunderscore
             e = replace(e, "_" => " ")
         end
@@ -32,7 +53,7 @@ function tablex(
     push!(cells, hlinex(; stroke, y = 1),)
 
     # iterate over elements of row
-    for (i, r) in (enumerate∘eachrow)(et)
+    for (i, r) in (enumerate∘eachrow)(df)
         for (j, e) in enumerate(r)
             e_ = if (supertype∘eltype)(e) == AbstractFloat
                 @show e
@@ -45,7 +66,7 @@ function tablex(
         end
     end
 
-    ncol = size(et, 2) + (coloff - 1)*-1
+    ncol = size(df, 2) + (coloff - 1)*-1
     columns = "(" * reduce(*, ["auto, " for _ in 1:ncol]) * ")"
 
     return tablex(cells; columns, auto_lines);
