@@ -10,6 +10,8 @@ import OrderedCollections:OrderedDict
 import Base.print
 
 include("tablecomponent.jl")
+include("hlinex.jl")
+include("vlinex.jl")
 include("types.jl")
 include("figure.jl")
 include("utilities.jl")
