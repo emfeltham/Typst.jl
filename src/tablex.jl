@@ -209,3 +209,5 @@ function print(tx::TableX; tb = "    ")
     reduce(*, pcells) *
     tb[1:(length(tb)-4)] * ")"
 end
+
+export tablex
