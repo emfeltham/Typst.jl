@@ -1,5 +1,9 @@
 # types.jl
 
+abstract type TableComponent end
+
+export TableComponent
+
 struct Caption
     text::String
 end

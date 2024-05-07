@@ -9,7 +9,7 @@ import OrderedCollections:OrderedDict
 
 import Base.print
 
-include("tablecomponent.jl")
+include("cellx.jl")
 include("hlinex.jl")
 include("vlinex.jl")
 include("types.jl")

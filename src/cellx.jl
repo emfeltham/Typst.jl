@@ -1,9 +1,5 @@
-# types.jl
+# cellx.jl
 # types and functions for table building and printing
-
-abstract type TableComponent end
-
-export TableComponent
 
 struct CellX <: TableComponent
     content::Union{String, Symbol, Real}
