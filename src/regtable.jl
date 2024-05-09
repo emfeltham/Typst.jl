@@ -1,6 +1,22 @@
 # regtable.jl
 
 """
+pvalkey
+
+Default p-value key for regression tables.
+"""
+pvalkey = (
+    values = [0.1, 0.05, 0.005, 0.001],
+    symbols = [
+        "super[\$+\$]", "super[\$star.op\$]",
+        "super[\$star.op star.op\$]",
+        "super[\$star.op star.op star.op\$]"
+    ]
+);
+
+export pvalkey
+
+"""
 
         regtablet(
             ms, filename;
@@ -42,14 +58,7 @@ function regtablet(
     understat = "se",
     col1width = 10,
     stats = [nobs, r2, adjr2, aic, bic],
-    pvalkey = (
-        values = [0.1, 0.05, 0.005, 0.001],
-        symbols = [
-            "super[\$+\$]", "super[\$star.op\$]",
-            "super[\$star.op star.op\$]",
-            "super[\$star.op star.op star.op\$]"
-        ]
-    )
+    pvalkey = pvalkey
 )
 
     cnames = (unique∘reduce)(vcat, [coefnames(m) for m in ms]);
@@ -317,3 +326,23 @@ function passign(pv, pvalkey)
         ""
     end
 end
+
+function passign(pv::AbstractFloat, pvalkey)
+    fl = findlast(pv .< pvalkey.values)
+    return if !isnothing(fl)
+        "#" * "ps.at(" * string(fl-1) * ")" # zero-based in typst
+    else
+        ""
+    end
+end
+
+function pset(pv::AbstractFloat, pvalkey)
+    fl = findlast(pv .< pvalkey.values)
+    return if !isnothing(fl)
+        "#" * pvalkey.symbols[fl]
+    else
+        ""
+    end
+end
+
+export pset

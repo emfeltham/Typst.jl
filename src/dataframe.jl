@@ -38,27 +38,32 @@ function tablex(
     replaceunderscore = true,
     auto_lines = false,
     autocell = true,
-    superheader = nothing
+    superheader = nothing,
+    scientificnotation = false,
+    rounddigits = 3
 )
+
+    if scientificnotation
+        z = "%." * string(rounddigits) * "E"
+    end
 
     cells = TableComponent[];
 
     # superheader
     if !isnothing(superheader)
-        append!(cells, superheader)
+        append!(cells, superheader.content)
     end
 
     # column of row numbers
-    coloff = if numberrows
-        push!(cells, vlinex(; start_ = 1, stroke, x = ifelse(autocell, 1, :auto)))
-        0
-    else
-        1
-    end
+    coloff = ifelse(numberrows, 0, 1)
 
     # header
     if numberrows # blank cell
+        start_1 = ifelse(!isnothing(superheader), superheader.rownum, 0) + 1
         push!(cells, cellx(; cellpos(autocell; x = 0, y = 0)...))
+        push!(cells, vlinex(
+            ; start_ = start_1, stroke, x = ifelse(autocell, :auto, 1)
+        ))
     end
 
     # column names
@@ -70,7 +75,9 @@ function tablex(
             ; content = e, cellpos(autocell; x = j - coloff, y = 0)...
         ))
     end
-    push!(cells, hlinex(; start_ = (coloff - 1)*-1, stroke, y = ifelse(autocell, 1, auto)),)
+    push!(cells, hlinex(
+        ; start_ = (coloff - 1)*-1, stroke, y = ifelse(autocell, :auto, 1)),
+    )
 
     # table content
     # row-by-row (to match cell entry order for tablex when autocell=false)
@@ -82,7 +89,11 @@ function tablex(
         for (j, e) in enumerate(r)
             e_ = if (supertype∘eltype)(e) == AbstractFloat
                 @show e
-                round(e, digits = 3)
+                if scientificnotation
+                    @eval @sprintf($z, 3)
+                else
+                    round(e, digits = rounddigits)
+                end
             else
                 e
             end

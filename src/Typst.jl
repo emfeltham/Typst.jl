@@ -8,6 +8,7 @@ using StatsModels, GLM, MixedModels
 import OrderedCollections:OrderedDict
 
 import Base.print
+using Printf
 
 include("types.jl")
 include("cellx.jl")
