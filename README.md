@@ -165,7 +165,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 ## Tasks
 
 - [ ] real documentation
-- [ ] update examples to match code changes
+- [ ] update examples to match code changes (N.B., the examples are very out of date and not correct)
 - [X] short captions
 
 ### Regression tables
@@ -177,10 +177,13 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ### Tables
 
-- [X] objects for other tablex functions, e.g., `#vlinex`
-- [ ] functions for other kinds of tables (e.g., simple display of an array, dataframe)
+- [X] objects for other tablex functions
+  - [X] `vlinex`
+  - [ ] `rowspanx`, `colspanx`
+- [ ] functions for other kinds of tables
+  - [X] simple display of an array, dataframe
 - [ ] NamedArrays
-- [ ] structs and functions for `gridx` options
+- [X] `gridx` option (cf. `autolines`)
 - [ ] adjust import statement above to only include functions needed for current table
 - [ ] option to include tables with tablecomponents not explicitly indexed by (x, y)
 
