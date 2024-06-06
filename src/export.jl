@@ -117,6 +117,7 @@ export figure_export
 function table_export(
     filepathname,
     tbl;
+    extra::String = nothing,
     placement = :auto,
     caption::Union{Symbol, String} = :none,
     kind = :auto,
@@ -144,7 +145,9 @@ function table_export(
 
     imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n \n";
 
-    textexport(filepathname, imp * print(fgt))
+    extra = ifelse(isnothing(extra), "", extra * "\n \n")
+
+    textexport(filepathname, imp * extra * print(fgt))
 end
 
 export table_export

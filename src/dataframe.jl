@@ -40,8 +40,18 @@ function tablex(
     autocell = true,
     superheader = nothing,
     scientificnotation = false,
-    rounddigits = 3
+    rounddigits = 3,
+    drawhlines = true,
+    varstroke = Symbol("0.01em")
 )
+
+    df = deepcopy(df)
+    if "hline" ∈ names(df)
+        hlines = df[!, :hline]
+        select!(df, Not(:hline))
+    else
+        hlines = fill(false, nrow(df))
+    end
 
     if scientificnotation
         z = "%." * string(rounddigits) * "E"
@@ -59,11 +69,17 @@ function tablex(
 
     # header
     if numberrows # blank cell
-        start_1 = ifelse(!isnothing(superheader), superheader.rownum, 0) + 1
+        start_1 = if !isnothing(superheader)
+            superheader.rownum
+        else 0
+        end
+        start_1 += 1
         push!(cells, cellx(; cellpos(autocell; x = 0, y = 0)...))
         push!(cells, vlinex(
             ; start_ = start_1, stroke, x = ifelse(autocell, :auto, 1)
         ))
+    else
+        start_1 = 0
     end
 
     # column names
@@ -82,6 +98,13 @@ function tablex(
     # table content
     # row-by-row (to match cell entry order for tablex when autocell=false)
     for (i, r) in (enumerate∘eachrow)(df)
+
+        if drawhlines & hlines[i]
+            push!(cells, hlinex(
+                ; start_ = (coloff - 1)*-1, stroke = varstroke, y = ifelse(autocell, :auto, i)),
+            )
+        end
+
         if numberrows
             push!(cells, cellx(; content = string(i), cellpos(autocell; x = i, y = 0)...))
         end
@@ -106,6 +129,10 @@ function tablex(
 
     ncol = size(df, 2) + (coloff - 1)*-1
     columns = "(" * reduce(*, ["auto, " for _ in 1:ncol]) * ")"
+
+    # bottom and RHS lines
+    push!(cells, vlinex(; start_ = start_1, stroke, x = :auto))
+    push!(cells, hlinex(; start_ = (coloff - 1)*-1, stroke, y = :auto))
 
     return tablex(cells; columns, auto_lines);
 end
