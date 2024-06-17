@@ -107,7 +107,7 @@ function table_export(
     tbl;
     extra::String = nothing,
     placement = :auto,
-    short_caption = ::Union{Symbol, Caption} = :auto,
+    short_caption::Union{Symbol, String} = :auto,
     caption::Union{Symbol, String} = :none,
     kind = "table",
     supplement = :none,
