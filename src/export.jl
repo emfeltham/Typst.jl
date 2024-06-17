@@ -50,19 +50,6 @@ function figure_export(
         short_caption = Caption(short_caption)
     end
 
-    if short_caption != :none
-        shortcapfunction = "// short captions" * "\n" *
-        "#let in-outline = state(\"in-outline\", false)" * "\n" *
-        "#show outline: it => {" * "\n" *
-        "    in-outline.update(true)" * "\n" *
-        "    it" * "\n" *
-        "    in-outline.update(false)" * "\n" *
-        "}" * "\n" *
-        "#let flex-caption(long, short) = locate(loc => " * "\n" *
-        "    if in-outline.at(loc) { short } else { long }" * "\n" *
-        ")" * "\n\n"
-    end
-
     fgt = figuret(
         image(filepathname);
         placement,
@@ -99,6 +86,7 @@ export figure_export
             filepathname,
             tbl;
             placement = :auto,
+            short_caption::Union{Symbol, Caption} = :auto,
             caption::Union{Symbol, String} = :none,
             kind = :auto,
             supplement = :none,
@@ -119,8 +107,9 @@ function table_export(
     tbl;
     extra::String = nothing,
     placement = :auto,
+    short_caption = ::Union{Symbol, Caption} = :auto,
     caption::Union{Symbol, String} = :none,
-    kind = :auto,
+    kind = "table",
     supplement = :none,
     numbering = "1",
     gap = Symbol("0.65em"),
@@ -132,10 +121,15 @@ function table_export(
         caption = Caption(caption)
     end
 
+    if (short_caption != :none) & (short_caption != :auto)
+        short_caption = Caption(short_caption)
+    end
+
     fgt = figuret(
         tbl;
         placement,
         caption,
+        short_caption,
         kind,
         supplement,
         numbering,
@@ -150,7 +144,13 @@ function table_export(
     else extra * "\n \n"
     end
 
-    textexport(filepathname, imp * extra * print(fgt))
+    out = imp * extra * print(fgt)
+
+    if short_caption != :none
+        out = shortcapfunction * out
+    end
+
+    textexport(filepathname, out)
 end
 
 export table_export
