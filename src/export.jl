@@ -145,7 +145,10 @@ function table_export(
 
     imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n \n";
 
-    extra = ifelse(isnothing(extra), "", extra * "\n \n")
+    extra = if isnothing(extra)
+        ""
+    else extra * "\n \n"
+    end
 
     textexport(filepathname, imp * extra * print(fgt))
 end

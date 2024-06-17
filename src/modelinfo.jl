@@ -18,7 +18,7 @@ end
 @inline ±(x, y) = [x-y, x+y]
 
 """
-        _modelinfos!(mfos, ms, stats, digits, rndp)
+        _modelinfos!(mfos, ms, stats, digits, rndp, coeftables)
 
 ## Description
 
@@ -26,11 +26,19 @@ Populate a `ModelInfo` object for each input model in `ms` that contains
 model information for the regression table in a format more amenable to
 table construction.
 """
-function _modelinfos!(mfos, ms, stats, digits, rndp)
-    for m in ms
+function _modelinfos!(
+    mfos::Vector{ModelInfo},
+    ms, stats, digits, rndp, coeftables
+)
+    for (ix, m) in enumerate(ms)
         cdict = Dict{String, Dict{String, String}}();
         
-        for c in coeftable(m)
+        cft = if isnothing(coeftables)
+            coeftable(m) |> DataFrame
+        else coeftables[ix]
+        end
+
+        for c in eachrow(cft)
             cn = c[:Name];
             cdict[cn] = Dict{String, String}()
             cdict[cn]["est"] = (string∘round)(c[Symbol("Coef.")]; digits)
@@ -70,7 +78,12 @@ function _modelinfos!(mfos, ms, stats, digits, rndp)
         end
         # construct row by row
 
-        mfo = ModelInfo("", cdict::AbstractDict{String, Dict{String, String}}, sdict::AbstractDict{String, String}, vcomp::AbstractDict{String, String})
+        mfo = ModelInfo(
+            "",
+            cdict::AbstractDict{String, Dict{String, String}}, 
+            sdict::AbstractDict{String, String},
+            vcomp::AbstractDict{String, String}
+        )
         push!(mfos, mfo)
     end
 end

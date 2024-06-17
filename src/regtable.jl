@@ -49,6 +49,7 @@ strings in Julia.
 """
 function regtablet(
     ms, filename;
+    coeftables = nothing,
     label = nothing,
     modeltitles = nothing,
     caption = :none,
@@ -96,7 +97,7 @@ function regtablet(
     );
 
     mfos = ModelInfo[];
-    _modelinfos!(mfos, ms, stats, roundvals, rndp)
+    _modelinfos!(mfos, ms, stats, roundvals, rndp, coeftables)
     
     mxname = 0
     for mfo in mfos

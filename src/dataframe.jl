@@ -110,8 +110,7 @@ function tablex(
         end
         # iterate over elements of a DataFrameRow
         for (j, e) in enumerate(r)
-            e_ = if (supertype∘eltype)(e) == AbstractFloat
-                @show e
+            e_ = if ((eltype)(e) <: AbstractFloat) & (eltype(e) != Type) & (typeof(e) != DataType)
                 if scientificnotation
                     @eval @sprintf($z, 3)
                 else
