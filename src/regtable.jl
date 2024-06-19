@@ -22,6 +22,7 @@ export pvalkey
             ms, filename;
             label = nothing,
             modeltitles = nothing,
+            short_caption = :auto,
             caption = :none,
             supplement = :none,
             roundvals = 3,
@@ -52,6 +53,7 @@ function regtablet(
     coeftables = nothing,
     label = nothing,
     modeltitles = nothing,
+    short_caption = :auto,
     caption = :none,
     supplement = :none,
     kind = :table,
@@ -61,6 +63,10 @@ function regtablet(
     stats = [nobs, r2, adjr2, aic, bic],
     pvalkey = pvalkey
 )
+
+    if (short_caption != :none) & (short_caption != :auto)
+        short_caption = Caption(short_caption)
+    end
 
     cnames = (unique∘reduce)(vcat, [coefnames(m) for m in ms]);
     ms_l = length(ms);
@@ -129,7 +135,7 @@ function regtablet(
         caption = Caption(caption)
     end
 
-    fgt = figuret(tbl; caption, supplement, kind);
+    fgt = figuret(tbl; short_caption, caption, supplement, kind);
 
     # import statement
     imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n";
@@ -159,6 +165,11 @@ function regtablet(
 
     pfgt = print(fgt; label = label, tb = reduce(*, fill(" ", 8)));
     txto = reduce(*, [frontmatter, pfgt]);
+
+    if short_caption != :none
+        txto = shortcapfunction * txto
+    end
+
     textexport(filename, txto; ext = ".typ");
     return txto
 end
