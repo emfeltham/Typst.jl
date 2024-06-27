@@ -109,7 +109,7 @@ function table_export(
     placement = :auto,
     short_caption::Union{Symbol, String} = :auto,
     caption::Union{Symbol, String} = :none,
-    kind = "table",
+    kind = Symbol("table"),
     supplement = :none,
     numbering = "1",
     gap = Symbol("0.65em"),
