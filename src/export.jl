@@ -80,7 +80,6 @@ end
 
 export figure_export
 
-
 """
         table_export(
             filepathname,
@@ -105,7 +104,7 @@ export figure_export
 function table_export(
     filepathname,
     tbl;
-    extra::String = nothing,
+    extra = nothing,
     placement = :auto,
     short_caption::Union{Symbol, String} = :auto,
     caption::Union{Symbol, String} = :none,
