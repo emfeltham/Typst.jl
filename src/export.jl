@@ -150,6 +150,14 @@ function table_export(
         out = shortcapfunction * out
     end
 
+    fnp = split(filepathname, ".")[1] # remove extension
+    fnp * "\"" * fnp * "\""
+
+    # label is filename
+    label = getname(filepathname; ext = false) |> makelabel
+
+    out = out * label;
+
     textexport(filepathname, out)
 end
 
