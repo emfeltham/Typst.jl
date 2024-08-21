@@ -80,7 +80,6 @@ end
 
 export figure_export
 
-
 """
         table_export(
             filepathname,
@@ -105,11 +104,13 @@ export figure_export
 function table_export(
     filepathname,
     tbl;
-    extra::String = nothing,
+    extra = nothing,
     placement = :auto,
     short_caption::Union{Symbol, String} = :auto,
     caption::Union{Symbol, String} = :none,
     kind = "table",
+        # this should print as plain text for this default option;
+        # o.w., it should be in square brackets or quotations
     supplement = :none,
     numbering = "1",
     gap = Symbol("0.65em"),

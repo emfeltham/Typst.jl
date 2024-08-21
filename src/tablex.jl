@@ -78,6 +78,7 @@ function tablex(
     )
 end
 
+export tablex
 
 """
         print(tx::TableX; tb = "    ")
