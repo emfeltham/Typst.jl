@@ -145,7 +145,10 @@ function table_export(
     else extra * "\n \n"
     end
 
-    out = imp * extra * print(fgt)
+    # label is filename
+    label = getname(filepathname; ext = false) |> makelabel
+    
+    out = imp * extra * print(fgt; label)
 
     if short_caption != :none
         out = shortcapfunction * out

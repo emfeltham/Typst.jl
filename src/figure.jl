@@ -81,8 +81,8 @@ function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
         end
 
         "caption: flex-caption(\n" *
-        print(fx.caption) * ",\n" *
-        print(short_caption) * "\n" *
+        "\t" * print(fx.caption) * ",\n" *
+        "\t" * print(short_caption) * "\n" *
         ")"
     else ""
     end
