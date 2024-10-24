@@ -140,23 +140,42 @@ data = DataFrame(X=[1,2,3], Y=[2,4,7], Z = [4,5,6]);
 fg, ax, pl = scatter(data.X, data.Y)
 ```
 
-The function will automatically handle directories on the path. N.B., the figure file extension is included in `filename`. Note also that output ".typ" file to load the figure expects the figure file to appear in the same directory (e.g., below, the "plot.png" should be saved in "dir/").
+The function will automatically handle directories on the path. N.B., the figure file extension is included in `filenamepath`. Note also that output ".typ" file to load the figure expects the figure file to appear in the same directory (e.g., below, the "plot.svg" should be saved in "dir/").
 
 ```julia
-filename = "dir/plot.png"
-caption = "Plot caption."
+filenamepath = "dir/plot.svg"
+caption = "Plot caption.",
+short_caption = "Cap"
 
-figure_typ(
-    filename; caption, label = nothing, width_pct = 100
+#=
+If desired, define a modified version of the Makie `save` function with whatever specified options. Otherwise,
+just input `save`.
+=#
+@inline save2(name, fg) = save(name, fg; pt_per_unit = 2)
+
+
+short_caption = "Effect of village size above or below 150"
+caption = "(a) Effect of village size above or below Dunbar's number with respect to accuracy in network cognition. LHS: Grey bands that surround the effect estimates represent bootstrapped 95% confidence ellipses. RHS: Bands represent 95% confidence intervals (see Methods for details). (b) Distribution of village sizes, with Dunbar's number (150) (yellow line) and average size (black line)."
+
+figure_export(
+    filenamepath,
+    fg, # Makie figure
+    save2; # Makie save function
+    caption,
+    short_caption,
 )
+end
 ```
 
 The following output is produced in "dir/plot.typ":
 
 ```typst
 #figure(
-   image("plot.png", width: 100%),
-   caption: [Plot caption.],
+    image("plot.png", width: 100%),
+    caption: flex-caption(
+	     [Plot caption.],
+	     [Cap]
+    )
 ) <plot>
 ```
 
@@ -164,7 +183,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ## Tasks
 
-- [ ] real and updated documentation (the documentation is **not** current)
+- [/] real and updated documentation (the documentation is **not** current)
 - [ ] update examples to match code changes (N.B., the examples are very out of date and not correct)
 - [X] short captions
 
