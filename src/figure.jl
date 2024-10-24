@@ -81,17 +81,16 @@ function print(fx::FigureT; label = nothing, tb = reduce(*, fill(" ", 8)))
         end
 
         "caption: flex-caption(\n" *
-        print(fx.caption) * ",\n" *
-        print(short_caption) * "\n" *
+        "\t" * print(fx.caption) * ",\n" *
+        "\t" * print(short_caption) * "\n" *
         ")"
     else ""
     end
 
     kind = if fx.kind != :auto
-        if (fx.kind != :figure) | (fx.kind != :table)
-            # custom types should have surrounding quotes
-            "kind: " * "\"" * string(fx.kind) * "\""
-        else "kind: " * "\"" * string(fx.kind) * "\""
+        if fx.kind ∈ [:image, :table, :code]
+            "kind: " * string(fx.kind)
+        else "kind: " * "\"" * string(fx.kind) * "\"" # custom types need quotes
         end
     else ""
     end

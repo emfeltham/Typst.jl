@@ -159,8 +159,9 @@ function regtablet(
     frontmatter = reduce(*, frontmatter);
 
     # table label
-    if isnothing(label)
-        label = makelabel(filename)
+    label = if isnothing(label)
+        makelabel(filename)
+    else makelabel(label)
     end
 
     pfgt = print(fgt; label = label, tb = reduce(*, fill(" ", 8)));

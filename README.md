@@ -140,23 +140,47 @@ data = DataFrame(X=[1,2,3], Y=[2,4,7], Z = [4,5,6]);
 fg, ax, pl = scatter(data.X, data.Y)
 ```
 
-The function will automatically handle directories on the path. N.B., the figure file extension is included in `filename`. Note also that output ".typ" file to load the figure expects the figure file to appear in the same directory (e.g., below, the "plot.png" should be saved in "dir/").
+The function will automatically handle directories on the path. N.B., the figure file extension is included in `filenamepath`. Also observe that the output ".typ" file to load the figure expects the figure file to appear in the same directory (in the example below, the "plot.svg" should be saved in "dir/"). `export_figure` will automatically save them in the same place.
 
 ```julia
-filename = "dir/plot.png"
-caption = "Plot caption."
+filenamepath = "dir/plot.svg"
+caption = "Plot caption.",
+short_caption = "Cap"
 
-figure_typ(
-    filename; caption, label = nothing, width_pct = 100
+#=
+If desired, define a modified version of the Makie `save` function with whatever specified options. Otherwise,
+just input `save`.
+=#
+@inline save2(name, fg) = save(name, fg; pt_per_unit = 2)
+
+# Short captions are used in the list of figures or the list of tables
+short_caption = "Effect of village size above or below 150"
+# Long captions appear with the figure itself
+caption = "(a) Effect of village size above or below Dunbar's number with respect to accuracy in network cognition. LHS: Grey bands that surround the effect estimates represent bootstrapped 95% confidence ellipses. RHS: Bands represent 95% confidence intervals (see Methods for details). (b) Distribution of village sizes, with Dunbar's number (150) (yellow line) and average size (black line)."
+
+#= generate two files
+(1) a ".typ" that includes figure information for Typst, and
+(2) the image file (e.g., "plot.svg") that is called in the ".typ" file.
+=#
+figure_export(
+    filenamepath,
+    fg, # Makie figure
+    save2; # Makie save function
+    caption,
+    short_caption,
 )
+end
 ```
 
 The following output is produced in "dir/plot.typ":
 
 ```typst
 #figure(
-   image("plot.png", width: 100%),
-   caption: [Plot caption.],
+    image("plot.png", width: 100%),
+    caption: flex-caption(
+	     [Plot caption.],
+	     [Cap]
+    )
 ) <plot>
 ```
 
@@ -164,7 +188,10 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ## Tasks
 
-- [ ] real documentation
+- [/] real and updated documentation (the documentation is **not** current)
+  - [/] updated for figure export
+  - [ ] DataFrame export
+  - [ ] update regression table export
 - [ ] update examples to match code changes (N.B., the examples are very out of date and not correct)
 - [X] short captions
 
@@ -181,11 +208,12 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
   - [X] `vlinex`
   - [ ] `rowspanx`, `colspanx`
 - [ ] functions for other kinds of tables
-  - [X] simple display of an array, dataframe
+  - [X] simple display of an array, DataFrame
 - [ ] NamedArrays
 - [X] `gridx` option (cf. `autolines`)
 - [ ] adjust import statement above to only include functions needed for current table
 - [ ] option to include tables with tablecomponents not explicitly indexed by (x, y)
+- [ ] regularize regression table with table_export workflow
 
 ### Figures
 
@@ -194,7 +222,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ### Dynamic text
 
-- [ ] export variables from Julia into Typst (e.g., so that the text can reference exported variables that update based on Julia code execution) (probably use dicts)
+- [ ] export variables from Julia into Typst (_e.g._, so that the text can reference exported variables that update based on Julia code execution) (probably use dicts)
 
 ### Types
 

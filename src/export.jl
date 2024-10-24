@@ -108,7 +108,7 @@ function table_export(
     placement = :auto,
     short_caption::Union{Symbol, String} = :auto,
     caption::Union{Symbol, String} = :none,
-    kind = "table",
+    kind = :table,
         # this should print as plain text for this default option;
         # o.w., it should be in square brackets or quotations
     supplement = :none,
@@ -145,7 +145,10 @@ function table_export(
     else extra * "\n \n"
     end
 
-    out = imp * extra * print(fgt)
+    # label is filename
+    label = getname(filepathname; ext = false) |> makelabel
+    
+    out = imp * extra * print(fgt; label)
 
     if short_caption != :none
         out = shortcapfunction * out
