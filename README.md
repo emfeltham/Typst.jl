@@ -164,7 +164,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 ## Tasks
 
-- [ ] real documentation
+- [ ] real and updated documentation (the documentation is **not** current)
 - [ ] update examples to match code changes (N.B., the examples are very out of date and not correct)
 - [X] short captions
 
@@ -186,6 +186,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 - [X] `gridx` option (cf. `autolines`)
 - [ ] adjust import statement above to only include functions needed for current table
 - [ ] option to include tables with tablecomponents not explicitly indexed by (x, y)
+- [ ] regularize regression table with table_export workflow
 
 ### Figures
 
