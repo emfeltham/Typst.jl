@@ -25,6 +25,24 @@ Tables are built using the [typst-tablex](https://github.com/PgBiel/typst-tablex
 
 Table construction for Typst is built around structs that correspond to tablex functions, subset under the `TableX` abstract type, including `CellX`, and `HLineX`, which constitute the building blocks of tables.
 
+## DataFrame
+
+We can convert a DataFrame to a Typst table in the following way:
+
+```julia
+df = DataFrame(rand(10, 5), :auto)
+tb = tablex(df)
+
+table_export(
+    filepathname, # without extension (will be suffixed with ".typ")
+    tb;
+    short_caption = "Table Cap",
+    caption = "This is a simple conversion of a DataFrame to a typst table.",
+);
+```
+
+This will produce a file, `filepathname`, with suffix ".typ" that contains the formatted Typst table.
+
 ## Regression tables[^rdme-4]
 
 [^rdme-4]: Example adapted from [GLM.jl](https://juliastats.org/GLM.jl/stable/examples/).
@@ -190,7 +208,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
 
 - [/] real and updated documentation (the documentation is **not** current)
   - [/] updated for figure export
-  - [ ] DataFrame export
+  - [/] DataFrame export
   - [ ] update regression table export
 - [ ] update examples to match code changes (N.B., the examples are very out of date and not correct)
 - [X] short captions
