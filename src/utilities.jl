@@ -41,7 +41,9 @@ function getname(filename; ext = false)
 end
 
 function makelabel(filename)
-    return " " * "<" * getname(filename) * ">" * "\n"
+    x = getname(filename)
+    x = replace(x, " " => "-")
+    return " " * "<" * x * ">" * "\n"
 end
 
 import StatsBase.round

@@ -6,6 +6,7 @@ using DataFrames
 using StatsAPI, StatsBase, Statistics
 using StatsModels, GLM, MixedModels
 import OrderedCollections:OrderedDict
+using Typstry
 
 import Base.print
 using Printf

@@ -212,6 +212,7 @@ This file should be incorporated into your document via `#include("dir/plot.typ"
   - [ ] update regression table export
 - [ ] update examples to match code changes (N.B., the examples are very out of date and not correct)
 - [X] short captions
+- [ ] integrate [Typstry.jl](https://github.com/jakobjpeters/Typstry.jl)
 
 ### Regression tables
 
