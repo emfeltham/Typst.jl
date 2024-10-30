@@ -1,12 +1,13 @@
 module Typst
 
+using Reexport
 using DataFrames
 
 # these likely do need to be imported to make things relatively easy
 using StatsAPI, StatsBase, Statistics
 using StatsModels, GLM, MixedModels
 import OrderedCollections:OrderedDict
-using Typstry
+@reexport using Typstry
 
 import Base.print
 using Printf
