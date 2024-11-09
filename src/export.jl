@@ -106,8 +106,8 @@ function table_export(
     tbl;
     extra = nothing,
     placement = :auto,
-    short_caption::Union{Symbol, String} = :auto,
-    caption::Union{Symbol, String} = :none,
+    short_caption::Union{Symbol, String, TypstString} = :auto,
+    caption::Union{Symbol, String, TypstString} = :none,
     kind = :table,
         # this should print as plain text for this default option;
         # o.w., it should be in square brackets or quotations
