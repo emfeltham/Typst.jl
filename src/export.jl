@@ -32,8 +32,8 @@ function figure_export(
     fg,
     save::Function;
     placement = :auto,
-    caption::Union{Symbol, String} = :none,
-    short_caption::Union{Symbol, String} = :auto,
+    short_caption::Union{Symbol, String, TypstString} = :auto,
+    caption::Union{Symbol, String, TypstString} = :none,
     kind = :auto,
     supplement = :none,
     numbering = "1",
