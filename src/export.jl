@@ -155,7 +155,9 @@ function table_export(
     end
 
     fnp = split(filepathname, ".")[1] # remove extension
-    fnp * "\"" * fnp * "\""
+
+    # allow table to span multiple pages
+    fnp * "\"" * fnp * "\"" * "#show figure: set block(breakable: true)" * "\""
 
     textexport(filepathname, out)
 end
