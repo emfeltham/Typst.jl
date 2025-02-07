@@ -12,7 +12,7 @@ import OrderedCollections:OrderedDict
 import Base.print
 using Printf
 
-global "@preview/tablex:0.0.8\""
+global typst_version = "\"@preview/tablex:0.0.9\""
 
 include("types.jl")
 include("cellx.jl")

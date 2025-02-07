@@ -138,7 +138,7 @@ function table_export(
         outlined
     )
 
-    imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n \n";
+    imp = "#import" * typst_version * ": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n \n";
 
     extra = if isnothing(extra)
         ""
