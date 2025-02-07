@@ -12,6 +12,8 @@ import OrderedCollections:OrderedDict
 import Base.print
 using Printf
 
+global "@preview/tablex:0.0.8\""
+
 include("types.jl")
 include("cellx.jl")
 include("hlinex.jl")

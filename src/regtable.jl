@@ -138,7 +138,7 @@ function regtablet(
     fgt = figuret(tbl; short_caption, caption, supplement, kind);
 
     # import statement
-    imp = "#import" * "\"" * "@preview/tablex:0.0.8\": tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n";
+    imp = "#import" * "\"" * tyst_version: tablex, gridx, hlinex, vlinex, colspanx, rowspanx, cellx" * "\n";
 
     # typst variables
     tvars = [
