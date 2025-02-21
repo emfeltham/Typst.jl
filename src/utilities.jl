@@ -59,6 +59,4 @@ shortcapfunction = "// short captions" * "\n" *
     "    it" * "\n" *
     "    in-outline.update(false)" * "\n" *
     "}" * "\n" *
-    "#let flex-caption(long, short) = context[locate(loc => " * "\n" *
-    "    if in-outline.at(loc) { short } else { long }" * "\n" *
-    ")]" * "\n\n";
+    "#let flex-caption(long, short) = context if in-outline.get() { short } else { long }" * "\n"
