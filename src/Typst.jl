@@ -1,13 +1,12 @@
 module Typst
 
-using Reexport
 using DataFrames
 
 # these likely do need to be imported to make things relatively easy
 using StatsAPI, StatsBase, Statistics
 using StatsModels, GLM, MixedModels
 import OrderedCollections:OrderedDict
-@reexport using Typstry
+using Typstry
 
 import Base.print
 using Printf
@@ -32,5 +31,15 @@ include("export.jl")
 include("markdown.jl")
 
 export print
+
+# Export main user-facing functions
+export table_export, figure_export, tablex, regtablet
+export textexport, image, figuret
+
+# Export types
+export TableComponent, CellX, HLineX, VLineX, TableX, Caption, Image, FigureT
+
+# Export regression utilities  
+export pvalkey, pset
 
 end # module Typst
